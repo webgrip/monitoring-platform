@@ -1,0 +1,6 @@
+services:
+  webhook-initializer:
+    container_name: webhook-initializer
+    build:
+      context: webhook-initializer
+      dockerfile: Dockerfile

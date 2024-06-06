@@ -1,0 +1,5 @@
+.idea
+.env
+loki/chunks
+loki/index
+loki/wal
