@@ -4,12 +4,12 @@ import json
 import time
 
 # Replace with your GitHub organization name
-GITHUB_ORG = os.getenv('GITHUB_TOKEN')
+GITHUB_ORG = os.getenv('GITHUB_ORG')
 # Replace with your personal access token
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 # Get ngrok public URL
 def get_ngrok_url():
-    url = 'http://localhost:4040/api/tunnels'
+    url = 'http://ngrok:4040/api/tunnels'
     while True:
         try:
             response = requests.get(url)

@@ -1,5 +1,5 @@
 .idea
 .env
-loki/chunks
-loki/index
-loki/wal
+src/loki/chunks
+src/loki/index
+src/loki/wal

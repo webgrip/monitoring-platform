@@ -3,8 +3,8 @@ services:
     container_name: prometheus
     image: prom/prometheus:v2.52.0
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - ./prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml
+      - ./src/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./src/prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml
     ports:
       - "9090:9090"
 
@@ -17,9 +17,9 @@ services:
       - GF_PATHS_CONFIG=/etc/grafana/custom.ini
     volumes:
       - grafana-data:/var/lib/grafana
-      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
-      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
-      - ./grafana/custom.ini:/etc/grafana/custom.ini
+      - ./src/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - ./src/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./src/grafana/custom.ini:/etc/grafana/custom.ini
 
   loki:
     container_name: loki
@@ -27,11 +27,11 @@ services:
     ports:
       - "3100:3100"
     volumes:
-      - ./loki:/etc/loki
-      - ./loki/wal:/wal
-      - ./loki/chunks:/chunks
-      - ./loki/index:/index
-      - ./loki/local-config.yaml:/etc/loki/local-config.yaml
+      - ./src/loki:/etc/loki
+      - ./src/loki/wal:/wal
+      - ./src/loki/chunks:/chunks
+      - ./src/loki/index:/index
+      - ./src/loki/local-config.yaml:/etc/loki/local-config.yaml
     environment:
       - LOKI_STORAGE_PATH=/wal
       - LOKI_CHUNKS_PATH=/chunks
@@ -63,14 +63,16 @@ services:
       - "--config"
       - "/etc/ngrok.yml"
     volumes:
-      - ./ngrok/ngrok.yml:/etc/ngrok.yml
+      - ./src/ngrok/ngrok.yml:/etc/ngrok.yml
     ports:
       - 4040:4040
     env_file:
-      -  .env
+      -  src/ngrok/.env
 
 volumes:
   grafana-data:
 
-
-
+networks:
+  default:
+    external: true
+    name: magento
