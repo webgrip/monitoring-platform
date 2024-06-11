@@ -1,0 +1,12 @@
+services:
+
+  mariadb:
+    container_name: mariadb
+    build:
+      context: ./src/mariadb
+      dockerfile: Dockerfile
+
+networks:
+  default:
+    external: true
+    name: magento

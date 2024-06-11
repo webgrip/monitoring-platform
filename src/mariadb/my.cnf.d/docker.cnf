@@ -1,0 +1,81 @@
+[mysqld]
+# GENERAL
+user                            = mysql
+pid-file                        = /var/run/mysqld/mysqld.pid
+socket                          = /var/run/mysqld/mysqld.sock
+port                            = 3306
+basedir                         = /usr
+datadir                         = /var/lib/mysql
+tmpdir                          = /tmp
+lc-messages-dir                 = /usr/share/mysql
+skip-external-locking
+
+# SAFETY
+max-allowed-packet              = 16M
+max-connect-errors              = 1000000
+sql-mode                        = STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION
+sysdate-is-now                  = 1
+innodb                         = FORCE
+
+# DATA STORAGE
+innodb-flush-method             = O_DIRECT
+innodb-log-files-in-group       = 2
+innodb-log-file-size            = 256M
+innodb-flush-log-at-trx-commit  = 1
+innodb-file-per-table           = 1
+innodb-buffer-pool-size         = 1G
+
+# CACHES AND LIMITS
+tmp-table-size                  = 32M
+max-heap-table-size             = 32M
+query-cache-type                = 0
+query-cache-size                = 0
+max-connections                 = 100
+thread-cache-size               = 50
+open-files-limit                = 65535
+table-definition-cache          = 4096
+table-open-cache                = 4096
+
+# LOGGING
+log-error                       = /var/log/mysql/error.log
+log-bin                         = /var/log/mysql/mysql-bin
+expire-logs-days                = 14
+sync-binlog                     = 1
+
+# REPLICATION
+server-id                       = 1
+binlog-format                   = ROW
+log-slave-updates               = 1
+relay-log                       = /var/log/mysql/mysql-relay-bin
+relay-log-index                 = /var/log/mysql/mysql-relay-bin.index
+expire-logs-days                = 10
+max-binlog-size                 = 100M
+
+# PERFORMANCE SCHEMA
+performance_schema              = ON
+
+# INNODB SETTINGS
+innodb-buffer-pool-instances    = 8
+innodb-log-buffer-size          = 8M
+innodb-lock-wait-timeout        = 50
+
+# CHARACTER SET
+character-set-server            = utf8mb4
+collation-server                = utf8mb4_general_ci
+
+[mysqldump]
+quick
+quote-names
+max-allowed-packet              = 16M
+
+[mysql]
+# CLIENT
+default-character-set           = utf8mb4
+
+[isamchk]
+!includedir /etc/mysql/conf.d/
+!includedir /etc/mysql/mysql.conf.d/
+key-buffer-size                 = 16M
+
+[mysqlhotcopy]
+interactive-timeout
