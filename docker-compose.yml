@@ -15,6 +15,19 @@ services:
       - "3000:3000"
     environment:
       - GF_PATHS_CONFIG=/etc/grafana/custom.ini
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.monitoring-platform.entrypoints=http"
+      - "traefik.http.routers.monitoring-platform.rule=Host(`monitoring-platform.test`)"
+      - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.sslheaders.headers.customrequestheaders.X-Forwarded-Proto=https"
+      - "traefik.http.routers.monitoring-platform.middlewares=traefik-https-redirect"
+      - "traefik.http.routers.monitoring-platform-secure.entrypoints=https"
+      - "traefik.http.routers.monitoring-platform-secure.rule=Host(`monitoring-platform.test`)"
+      - "traefik.http.routers.monitoring-platform-secure.tls=true"
+      - "traefik.http.routers.monitoring-platform-secure.tls.domains[0].main=monitoring-platform.test"
+      - "traefik.http.routers.monitoring-platform-secure.tls.domains[0].sans=*.monitoring-platform.test"
+      - "traefik.http.routers.monitoring-platform-secure.service=nginx-semver-actions"
     volumes:
       - grafana-data:/var/lib/grafana
       - ./src/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
@@ -46,7 +59,7 @@ services:
   github-webhook-receiver:
     container_name: github-webhook-receiver
     build:
-      context: github-webhook-receiver
+      context: src/github-webhook-receiver
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
