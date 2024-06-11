@@ -10,3 +10,15 @@ datasources:
     type: loki
     access: proxy
     url: http://loki:3100
+  - name: mysql
+    type: mysql
+    url: mariadb:3306
+    user: root
+    jsonData:
+      database: clients
+      maxOpenConns: 100
+      maxIdleConns: 100
+      maxIdleConnsAuto: true
+      connMaxLifetime: 14400
+    secureJsonData:
+      password: root

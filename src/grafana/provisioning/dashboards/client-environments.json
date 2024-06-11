@@ -1,126 +1,299 @@
 {
-  "dashboard": {
-    "id": null,
-    "title": "Client Environment Dashboard",
-    "timezone": "browser",
-    "panels": [
+  "id": 2,
+  "title": "Client Environment Dashboard",
+  "timezone": "browser",
+  "schemaVersion": 27,
+  "version": 3,
+  "links": [
+    {
+      "title": "Detailed View",
+      "url": "/d/1234/detailed-view",
+      "targetBlank": true
+    }
+  ],
+  "templating": {
+    "list": [
       {
-        "type": "table",
-        "title": "Client Environment Overview",
-        "gridPos": {
-          "x": 0,
-          "y": 0,
-          "w": 24,
-          "h": 10
-        },
-        "datasource": "Your MySQL Data Source Name",
-        "targets": [
-          {
-            "refId": "A",
-            "format": "table",
-            "rawSql": "SELECT `Github URL`, `Customer`, `Environment`, `Hostname`, `User`, `Port`, `Branch`, `Base URL`, `Admin URL`, `Themes`, `Languages`, `HaProxy`, `Apache`, `Varnish`, `Elasticsearch`, `ImgProxy`, `RedisCache`, `RedisSession`, `MySQL`, `PHP`, `Varnish image cache`, `Metapackage version`, `composer vendic imgproxy version`, `Sites`, `Allowed sources`, `Allowed dev sources` FROM your_table_name",
-            "hide": false
-          }
-        ],
-        "transform": "table",
-        "options": {
-          "showHeader": true,
-          "columns": [
-            {"text": "Customer", "type": "string"},
-            {"text": "Environment", "type": "string"},
-            {"text": "Hostname", "type": "string"},
-            {"text": "User", "type": "string"},
-            {"text": "Port", "type": "number"},
-            {"text": "Base URL", "type": "string"},
-            {"text": "Admin URL", "type": "string"},
-            {"text": "PHP Version", "type": "string"},
-            {"text": "Apache Version", "type": "string"},
-            {"text": "MySQL Version", "type": "string"},
-            {"text": "ImgProxy Version", "type": "string"}
-          ]
+        "type": "datasource",
+        "name": "datasource",
+        "label": "Datasource",
+        "query": "prometheus",
+        "refresh": 1
+      },
+      {
+        "type": "interval",
+        "name": "interval",
+        "label": "Interval",
+        "query": "1m, 5m, 10m, 30m, 1h, 6h, 12h, 24h",
+        "current": "5m"
+      },
+      {
+        "type": "query",
+        "name": "client",
+        "label": "Client",
+        "datasource": "mysql",
+        "refresh": 1,
+        "query": "SELECT DISTINCT Customer FROM clients",
+        "current": {
+          "text": "All",
+          "value": "All"
         }
-      },
-      {
-        "type": "graph",
-        "title": "PHP Version Distribution",
-        "gridPos": {
-          "x": 0,
-          "y": 10,
-          "w": 12,
-          "h": 8
-        },
-        "datasource": "Your MySQL Data Source Name",
-        "targets": [
-          {
-            "refId": "B",
-            "format": "time_series",
-            "rawSql": "SELECT time, version FROM php_versions WHERE $__timeFilter(time)",
-            "hide": false
-          }
-        ],
-        "transform": "time_series"
-      },
-      {
-        "type": "graph",
-        "title": "Apache Version Distribution",
-        "gridPos": {
-          "x": 12,
-          "y": 10,
-          "w": 12,
-          "h": 8
-        },
-        "datasource": "Your MySQL Data Source Name",
-        "targets": [
-          {
-            "refId": "C",
-            "format": "time_series",
-            "rawSql": "SELECT time, version FROM apache_versions WHERE $__timeFilter(time)",
-            "hide": false
-          }
-        ],
-        "transform": "time_series"
       }
-    ],
-    "schemaVersion": 27,
-    "version": 0,
-    "links": [
+    ]
+  },
+  "annotations": {
+    "list": [
       {
-        "title": "Detailed View",
-        "url": "/d/1234/detailed-view",
-        "targetBlank": true
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
       }
-    ],
-    "templating": {
-      "list": [
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "panels": [
+    {
+      "type": "table",
+      "title": "Client Environment Overview",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 10
+      },
+      "datasource": "mysql",
+      "targets": [
         {
-          "type": "datasource",
-          "name": "datasource",
-          "label": "Datasource",
-          "query": "prometheus",
-          "refresh": 1
-        },
-        {
-          "type": "interval",
-          "name": "interval",
-          "label": "Interval",
-          "query": "1m, 5m, 10m, 30m, 1h, 6h, 12h, 24h",
-          "current": "5m"
-        },
-        {
-          "type": "query",
-          "name": "client",
-          "label": "Client",
-          "datasource": "Your MySQL Data Source Name",
-          "refresh": 1,
-          "query": "SELECT DISTINCT Customer FROM your_table_name",
-          "current": {
-            "text": "All",
-            "value": "All"
+          "refId": "A",
+          "format": "table",
+          "rawSql": "SELECT `Github URL`, `Customer`, `Environment`, `Hostname`, `User`, `Port`, `Branch`, `Base URL`, `Admin URL`, `Themes`, `Languages`, `HaProxy`, `Apache`, `Varnish`, `Elasticsearch`, `ImgProxy`, `RedisCache`, `RedisSession`, `MySQL`, `PHP`, `Varnish image cache`, `Metapackage version`, `composer vendic imgproxy version`, `Sites`, `Allowed sources`, `Allowed dev sources` FROM clients",
+          "hide": false
+        }
+      ],
+      "transform": "table",
+      "options": {
+        "showHeader": true,
+        "columns": [
+          {
+            "text": "Customer",
+            "type": "string"
+          },
+          {
+            "text": "Environment",
+            "type": "string"
+          },
+          {
+            "text": "Hostname",
+            "type": "string"
+          },
+          {
+            "text": "User",
+            "type": "string"
+          },
+          {
+            "text": "Port",
+            "type": "number"
+          },
+          {
+            "text": "Base URL",
+            "type": "string"
+          },
+          {
+            "text": "Admin URL",
+            "type": "string"
+          },
+          {
+            "text": "PHP Version",
+            "type": "string"
+          },
+          {
+            "text": "Apache Version",
+            "type": "string"
+          },
+          {
+            "text": "MySQL Version",
+            "type": "string"
+          },
+          {
+            "text": "ImgProxy Version",
+            "type": "string"
           }
+        ]
+      }
+    },
+    {
+      "type": "graph",
+      "title": "PHP Version Distribution",
+      "gridPos": {
+        "x": 0,
+        "y": 10,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": "mysql",
+      "targets": [
+        {
+          "refId": "B",
+          "format": "time_series",
+          "rawSql": "SELECT time, version FROM php_versions WHERE $__timeFilter(time)",
+          "hide": false
+        }
+      ],
+      "transform": "time_series"
+    },
+    {
+      "type": "graph",
+      "title": "Apache Version Distribution",
+      "gridPos": {
+        "x": 12,
+        "y": 10,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": "mysql",
+      "targets": [
+        {
+          "refId": "C",
+          "format": "time_series",
+          "rawSql": "SELECT time, version FROM apache_versions WHERE $__timeFilter(time)",
+          "hide": false
+        }
+      ],
+      "transform": "time_series"
+    },
+    {
+      "type": "gauge",
+      "title": "CPU Usage",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 18
+      },
+      "datasource": {
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "10.4.3",
+      "targets": [
+        {
+          "datasource": {
+            "uid": "prometheus"
+          },
+          "expr": "100 - (avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[1m])) * 100)",
+          "legendFormat": "{{instance}}",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "type": "gauge",
+      "title": "Memory Usage",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 18
+      },
+      "datasource": {
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "displayMode": "gradient",
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "showUnfilled": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "10.4.3",
+      "targets": [
+        {
+          "datasource": {
+            "uid": "prometheus"
+          },
+          "expr": "node_memory_Active_bytes / node_memory_MemTotal_bytes * 100",
+          "legendFormat": "{{instance}}",
+          "refId": "A"
         }
       ]
     }
-  },
-  "folderId": 0,
-  "overwrite": false
+  ]
 }
+
