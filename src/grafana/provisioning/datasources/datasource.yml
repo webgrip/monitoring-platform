@@ -15,7 +15,7 @@ datasources:
     url: mariadb:3306
     user: root
     jsonData:
-      database: clients
+      database: monitoring
       maxOpenConns: 100
       maxIdleConns: 100
       maxIdleConnsAuto: true
