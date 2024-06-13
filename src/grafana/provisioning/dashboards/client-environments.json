@@ -1,13 +1,18 @@
 {
   "id": 2,
-  "title": "Client Environment Dashboard",
+  "title": "Enhanced Client Environment Dashboard",
   "timezone": "browser",
-  "schemaVersion": 27,
-  "version": 3,
+  "schemaVersion": 28,
+  "version": 4,
   "links": [
     {
       "title": "Detailed View",
       "url": "/d/1234/detailed-view",
+      "targetBlank": true
+    },
+    {
+      "title": "Support",
+      "url": "/support",
       "targetBlank": true
     }
   ],
@@ -131,11 +136,131 @@
       }
     },
     {
+      "type": "barchart",
+      "title": "PHP Version Distribution",
+      "gridPos": {
+        "x": 0,
+        "y": 56,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": "mysql",
+      "targets": [
+        {
+          "refId": "H",
+          "format": "table",
+          "rawSql": "SELECT `PHP` as version, COUNT(*) as count FROM clients GROUP BY `PHP`",
+          "hide": false
+        }
+      ],
+      "transform": "table"
+    },
+    {
+      "type": "barchart",
+      "title": "Apache Version Distribution",
+      "gridPos": {
+        "x": 12,
+        "y": 56,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": "mysql",
+      "targets": [
+        {
+          "refId": "I",
+          "format": "table",
+          "rawSql": "SELECT COUNT(*) as count, `Apache` as version FROM clients GROUP BY `Apache`",
+          "hide": false
+        }
+      ],
+      "transform": "table"
+    },
+    {
+      "type": "barchart",
+      "title": "Environment Distribution",
+      "gridPos": {
+        "x": 0,
+        "y": 64,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": "mysql",
+      "targets": [
+        {
+          "refId": "J",
+          "format": "table",
+          "rawSql": "SELECT COUNT(*) as count, `Environment` FROM clients GROUP BY `Environment`",
+          "hide": false
+        }
+      ],
+      "transform": "table"
+    },
+    {
+      "type": "piechart",
+      "title": "Hostname Distribution",
+      "gridPos": {
+        "x": 12,
+        "y": 64,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": "mysql",
+      "targets": [
+        {
+          "refId": "K",
+          "format": "table",
+          "rawSql": "SELECT COUNT(*) as count, `Hostname` FROM clients GROUP BY `Hostname`",
+          "hide": false
+        }
+      ],
+      "transform": "table"
+    },
+    {
+      "type": "gauge",
+      "title": "Redis Cache Usage",
+      "gridPos": {
+        "x": 0,
+        "y": 72,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": "mysql",
+      "targets": [
+        {
+          "refId": "L",
+          "format": "table",
+          "rawSql": "SELECT `RedisCache`, COUNT(*) as count FROM clients GROUP BY `RedisCache`",
+          "hide": false
+        }
+      ],
+      "transform": "table"
+    },
+    {
+      "type": "barchart",
+      "title": "MySQL Version Distribution",
+      "gridPos": {
+        "x": 12,
+        "y": 72,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": "mysql",
+      "targets": [
+        {
+          "refId": "M",
+          "format": "table",
+          "rawSql": "SELECT `MySQL`, COUNT(*) as count FROM clients GROUP BY `MySQL`",
+          "hide": false
+        }
+      ],
+      "transform": "table"
+    },
+    {
       "type": "graph",
       "title": "PHP Version Distribution",
       "gridPos": {
         "x": 0,
-        "y": 10,
+        "y": 24,
         "w": 12,
         "h": 8
       },
@@ -155,7 +280,7 @@
       "title": "Apache Version Distribution",
       "gridPos": {
         "x": 12,
-        "y": 10,
+        "y": 24,
         "w": 12,
         "h": 8
       },
@@ -171,129 +296,248 @@
       "transform": "time_series"
     },
     {
-      "type": "gauge",
-      "title": "CPU Usage",
+      "type": "table",
+      "title": "Version Distribution Overview",
       "gridPos": {
-        "h": 8,
-        "w": 12,
         "x": 0,
-        "y": 18
+        "y": 0,
+        "w": 24,
+        "h": 24
       },
-      "datasource": {
-        "uid": "prometheus"
+      "datasource": "mysql",
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "rawSql": "SELECT `Customer`, `Environment`, `PHP` as `PHP Version`, `Apache` as `Apache Version`, `MySQL` as `MySQL Version` FROM clients",
+          "hide": false
+        }
+      ],
+      "transform": "table",
+      "options": {
+        "showHeader": true,
+        "columns": [
+          {
+            "text": "Customer",
+            "type": "string"
+          },
+          {
+            "text": "Environment",
+            "type": "string"
+          },
+          {
+            "text": "PHP Version",
+            "type": "string"
+          },
+          {
+            "text": "Apache Version",
+            "type": "string"
+          },
+          {
+            "text": "MySQL Version",
+            "type": "string"
+          }
+        ]
       },
       "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
+        "defaults": {},
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "PHP Version"
+            },
+            "properties": [
               {
-                "color": "green",
-                "value": null
+                "id": "custom.displayMode",
+                "value": "color-background"
               },
               {
-                "color": "red",
-                "value": 80
+                "id": "custom.color",
+                "value": "thresholds"
+              },
+              {
+                "id": "custom.thresholds",
+                "value": {
+                  "mode": "gradient",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": 8
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 8.1.28
+                    },
+                    {
+                      "color": "green",
+                      "value": 8.2.19
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Apache Version"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "custom.color",
+                "value": "thresholds"
+              },
+              {
+                "id": "custom.thresholds",
+                "value": {
+                  "mode": "gradient",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": 2.4
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 2.4.39
+                    },
+                    {
+                      "color": "green",
+                      "value": 2.4.41
+                    },
+                    {
+                      "color": "dark-green",
+                      "value": 2.4.52
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "MySQL Version"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "custom.color",
+                "value": "thresholds"
+              },
+              {
+                "id": "custom.thresholds",
+                "value": {
+                  "mode": "gradient",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": 5.5
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 5.7
+                    },
+                    {
+                      "color": "green",
+                      "value": 8.0
+                    }
+                  ]
+                }
               }
             ]
           }
-        },
-        "overrides": []
-      },
-      "options": {
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "sizing": "auto"
-      },
-      "pluginVersion": "10.4.3",
-      "targets": [
-        {
-          "datasource": {
-            "uid": "prometheus"
-          },
-          "expr": "100 - (avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[1m])) * 100)",
-          "legendFormat": "{{instance}}",
-          "refId": "A"
-        }
-      ]
+        ]
+      }
     },
     {
-      "type": "gauge",
-      "title": "Memory Usage",
+      "type": "barchart",
+      "title": "Client Distribution by Environment",
       "gridPos": {
-        "h": 8,
+        "x": 0,
+        "y": 40,
         "w": 12,
-        "x": 12,
-        "y": 18
+        "h": 8
       },
-      "datasource": {
-        "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "displayMode": "gradient",
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "last"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "showUnfilled": true,
-        "sizing": "auto"
-      },
-      "pluginVersion": "10.4.3",
+      "datasource": "mysql",
       "targets": [
         {
-          "datasource": {
-            "uid": "prometheus"
-          },
-          "expr": "node_memory_Active_bytes / node_memory_MemTotal_bytes * 100",
-          "legendFormat": "{{instance}}",
-          "refId": "A"
+          "refId": "D",
+          "format": "table",
+          "rawSql": "SELECT Environment, COUNT(*) as count FROM clients GROUP BY Environment",
+          "hide": false
         }
-      ]
+      ],
+      "transform": "table"
+    },
+    {
+      "type": "heatmap",
+      "title": "Server Response Time",
+      "gridPos": {
+        "x": 12,
+        "y": 40,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": "prometheus",
+      "targets": [
+        {
+          "refId": "E",
+          "format": "heatmap",
+          "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le))",
+          "hide": false
+        }
+      ],
+      "transform": "heatmap"
+    },
+    {
+      "type": "piechart",
+      "title": "Resource Allocation",
+      "gridPos": {
+        "x": 0,
+        "y": 48,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": "prometheus",
+      "targets": [
+        {
+          "refId": "F",
+          "format": "table",
+          "expr": "sum by (resource) (rate(container_cpu_usage_seconds_total[1m]))",
+          "hide": false
+        }
+      ],
+      "transform": "table"
+    },
+    {
+      "type": "logs",
+      "title": "System Logs",
+      "gridPos": {
+        "x": 12,
+        "y": 48,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "targets": [
+        {
+          "refId": "G",
+          "expr": "{job=\"system\"}",
+          "hide": false
+        }
+      ],
+      "transform": "logs"
     }
   ]
 }
-
