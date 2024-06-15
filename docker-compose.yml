@@ -44,10 +44,10 @@ services:
       - "3100:3100"
     volumes:
       - ./src/loki:/etc/loki
-      - ./src/loki/wal:/wal
-      - ./src/loki/chunks:/chunks
-      - ./src/loki/index:/index
       - ./src/loki/local-config.yaml:/etc/loki/local-config.yaml
+      - ./var/loki/wal:/wal
+      - ./var/loki/chunks:/chunks
+      - ./var/loki/index:/index
     environment:
       - LOKI_STORAGE_PATH=/wal
       - LOKI_CHUNKS_PATH=/chunks

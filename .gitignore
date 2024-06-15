@@ -1,5 +1,3 @@
-.idea
+.idea/
+var/
 .env
-src/loki/chunks
-src/loki/index
-src/loki/wal
