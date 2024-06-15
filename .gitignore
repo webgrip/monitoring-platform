@@ -1,4 +1,4 @@
 .idea/
-var/logs/grafana\
-var/loki
+var/logs/grafana/
+var/loki/
 .env

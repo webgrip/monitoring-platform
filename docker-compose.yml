@@ -3,8 +3,8 @@ services:
     container_name: prometheus
     image: prom/prometheus:v2.52.0
     volumes:
-      - ./src/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - ./src/prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml
+      - ./ops/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./ops/prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml
     ports:
       - "9090:9090"
 
@@ -32,9 +32,9 @@ services:
       - "traefik.http.services.grafana-monitoring-platform.loadbalancer.server.port=3000"
     volumes:
       - grafana-data:/var/lib/grafana
-      - ./src/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
-      - ./src/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
-      - ./src/grafana/custom.ini:/etc/grafana/custom.ini
+      - ./ops/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - ./ops/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./ops/grafana/custom.ini:/etc/grafana/custom.ini
       - ./var/logs/grafana:/var/log/grafana
 
   loki:
@@ -43,8 +43,8 @@ services:
     ports:
       - "3100:3100"
     volumes:
-      - ./src/loki:/etc/loki
-      - ./src/loki/local-config.yaml:/etc/loki/local-config.yaml
+      - ./ops/loki:/etc/loki
+      - ./ops/loki/local-config.yaml:/etc/loki/local-config.yaml
       - ./var/loki/wal:/wal
       - ./var/loki/chunks:/chunks
       - ./var/loki/index:/index
@@ -62,7 +62,7 @@ services:
   github-webhook-receiver:
     container_name: github-webhook-receiver
     build:
-      context: src/github-webhook-receiver
+      context: ops/github-webhook-receiver
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
@@ -79,16 +79,16 @@ services:
       - "--config"
       - "/etc/ngrok.yml"
     volumes:
-      - ./src/ngrok/ngrok.yml:/etc/ngrok.yml
+      - ./ops/ngrok/ngrok.yml:/etc/ngrok.yml
     ports:
       - 4040:4040
     env_file:
-      -  src/ngrok/.env
+      -  ops/ngrok/.env
 
   mariadb:
     container_name: mariadb
     build:
-      context: ./src/mariadb
+      context: ./ops/mariadb
       dockerfile: Dockerfile
     ports:
       - 3307:3306
