@@ -10,7 +10,9 @@ services:
 
   grafana:
     container_name: grafana-monitoring-platform
-    image: grafana/grafana:11.0.0-ubuntu
+    build:
+      context: ops/grafana
+      dockerfile: Dockerfile
     ports:
       - 3000:3000
     environment:
