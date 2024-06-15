@@ -9,30 +9,33 @@ services:
       - "9090:9090"
 
   grafana:
-    container_name: grafana
+    container_name: grafana-monitoring-platform
     image: grafana/grafana:11.0.0-ubuntu
     ports:
-      - "3000:3000"
+      - 3000:3000
     environment:
       - GF_PATHS_CONFIG=/etc/grafana/custom.ini
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.monitoring-platform.entrypoints=http"
-      - "traefik.http.routers.monitoring-platform.rule=Host(`monitoring-platform.test`)"
       - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.middlewares.sslheaders.headers.customrequestheaders.X-Forwarded-Proto=https"
-      - "traefik.http.routers.monitoring-platform.middlewares=traefik-https-redirect"
-      - "traefik.http.routers.monitoring-platform-secure.entrypoints=https"
-      - "traefik.http.routers.monitoring-platform-secure.rule=Host(`monitoring-platform.test`)"
-      - "traefik.http.routers.monitoring-platform-secure.tls=true"
-      - "traefik.http.routers.monitoring-platform-secure.tls.domains[0].main=monitoring-platform.test"
-      - "traefik.http.routers.monitoring-platform-secure.tls.domains[0].sans=*.monitoring-platform.test"
-      - "traefik.http.routers.monitoring-platform-secure.service=nginx-semver-actions"
+      - "traefik.http.routers.grafana-monitoring-platform.entrypoints=http"
+      - "traefik.http.routers.grafana-monitoring-platform.rule=Host(`monitoring-platform.test`)"
+      - "traefik.http.routers.grafana-monitoring-platform.middlewares=traefik-https-redirect"
+      - "traefik.http.routers.grafana-monitoring-platform-secure.entrypoints=https"
+      - "traefik.http.routers.grafana-monitoring-platform-secure.rule=Host(`monitoring-platform.test`)"
+      - "traefik.http.routers.grafana-monitoring-platform-secure.tls=true"
+      - "traefik.http.routers.grafana-monitoring-platform-secure.tls.domains[0].main=monitoring-platform.test"
+      - "traefik.http.routers.grafana-monitoring-platform-secure.tls.domains[0].sans=*.monitoring-platform.test"
+      - "traefik.http.routers.grafana-monitoring-platform-secure.service=grafana-monitoring-platform"
+      - "traefik.http.services.grafana-monitoring-platform.loadbalancer.server.scheme=https"
+      - "traefik.http.services.grafana-monitoring-platform.loadbalancer.server.port=3000"
     volumes:
       - grafana-data:/var/lib/grafana
       - ./src/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
       - ./src/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
       - ./src/grafana/custom.ini:/etc/grafana/custom.ini
+      - ./var/logs/grafana:/var/log/grafana
 
   loki:
     container_name: loki
@@ -95,10 +98,20 @@ services:
       MYSQL_USER: monitor
       MYSQL_PASSWORD: monitor
 
+  monitoring-platform-mkcert:
+    container_name: monitoring-platform-mkcert
+    image: webgrip/traefik-mkcert:latest
+    volumes:
+      - ~/.config/mkcert:/root/.local/share/mkcert:ro
+      - certificate-data:/certificate-data:rw
+    entrypoint: [ "/app/entrypoint.sh", "monitoring-platform.test" ]
+
 volumes:
   grafana-data:
+  certificate-data:
+    external: true
 
 networks:
   default:
     external: true
-    name: magento
+    name: webgrip
