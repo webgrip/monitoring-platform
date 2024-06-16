@@ -12,7 +12,7 @@ RUN apt-get upgrade -y && apt-get update && \
 
 COPY custom.ini /etc/grafana/custom.ini
 # If you have plugins to install, do it like this:
-# RUN grafana-cli plugins install <plugin-name>
+RUN grafana cli plugins install grafana-image-renderer
 
 EXPOSE 3000
 
