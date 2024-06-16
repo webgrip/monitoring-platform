@@ -33,7 +33,7 @@ services:
       - "traefik.http.services.grafana-monitoring-platform.loadbalancer.server.scheme=https"
       - "traefik.http.services.grafana-monitoring-platform.loadbalancer.server.port=3000"
     volumes:
-      - grafana-data:/var/lib/grafana
+#      - grafana-data:/var/lib/grafana
       - ./ops/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
       - ./ops/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
       - ./ops/grafana/custom.ini:/etc/grafana/custom.ini
@@ -102,7 +102,8 @@ services:
 
   monitoring-platform-mkcert:
     container_name: monitoring-platform-mkcert
-    image: webgrip/traefik-mkcert:latest
+    image: webgrip/traefik-local-development-mkcert:latest
+    pull_policy: always
     volumes:
       - ~/.config/mkcert:/root/.local/share/mkcert:ro
       - certificate-data:/certificate-data:rw
