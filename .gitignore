@@ -2,3 +2,4 @@
 var/logs/grafana/
 var/loki/
 .env
+ops/mariadb/docker-entrypoint-initdb.d/
