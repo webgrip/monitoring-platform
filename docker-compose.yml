@@ -1,13 +1,4 @@
 services:
-  prometheus:
-    container_name: prometheus
-    image: prom/prometheus:v2.52.0
-    volumes:
-      - ./ops/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - ./ops/prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml
-    ports:
-      - "9090:9090"
-
   grafana:
     container_name: grafana-monitoring-platform
     build:
@@ -33,14 +24,23 @@ services:
       - "traefik.http.services.grafana-monitoring-platform.loadbalancer.server.scheme=https"
       - "traefik.http.services.grafana-monitoring-platform.loadbalancer.server.port=3000"
     volumes:
-#      - grafana-data:/var/lib/grafana
+      - grafana-data:/var/lib/grafana
       - ./ops/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
       - ./ops/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
       - ./ops/grafana/custom.ini:/etc/grafana/custom.ini
       - ./var/logs/grafana:/var/log/grafana
 
-  loki:
-    container_name: loki
+  monitoring-platform-mkcert:
+    container_name: monitoring-platform-mkcert
+    image: webgrip/traefik-local-development-mkcert:latest
+    pull_policy: always
+    volumes:
+      - ~/.config/mkcert:/root/.local/share/mkcert:ro
+      - certificate-data:/certificate-data:rw
+    entrypoint: [ "/app/entrypoint.sh", "monitoring-platform.test" ]
+
+  monitoring-platform-loki:
+    container_name: monitoring-platform-loki
     image: grafana/loki:2.9.8
     ports:
       - "3100:3100"
@@ -55,40 +55,53 @@ services:
       - LOKI_CHUNKS_PATH=/chunks
       - LOKI_INDEX_PATH=/index
 
-  node_exporter:
-    container_name: node_exporter
-    image: prom/node-exporter:v1.8.1
-    ports:
-      - "9100:9100"
-
-  github-webhook-receiver:
-    container_name: github-webhook-receiver
+  monitoring-platform-tempo:
+    container_name: monitoring-platform-tempo
+    depends_on:
+      monitoring-platform-otel-collector:
+        condition: service_started
+    image: webgrip/monitoring-platform-tempo:latest
     build:
-      context: ops/github-webhook-receiver
+      context: ./ops/tempo
       dockerfile: Dockerfile
-    ports:
-      - "8000:8000"
-    environment:
-      - SERVICE_PUBLIC_URL=http://ngrok:4040
-
-  ngrok:
-    container_name: ngrok
-    image: ngrok/ngrok:3.10.0-alpine
-    #restart: unless-stopped
-    command:
-      - "start"
-      - "--all"
-      - "--config"
-      - "/etc/ngrok.yml"
+    command: [ "-config.file=/etc/tempo.yaml" ]
     volumes:
-      - ./ops/ngrok/ngrok.yml:/etc/ngrok.yml
+      - ./ops/tempo/tempo.yaml:/etc/tempo.yaml
     ports:
-      - 4040:4040
-    env_file:
-      -  ops/ngrok/.env
+      - "14268:14268" # jaeger ingest
+      - "3200:3200" # tempo
+      - "4317:4317" # otlp grpc
+      - "4318:4318" # otlp http
+      - "9411:9411" # zipkin
 
-  mariadb:
-    container_name: mariadb
+  monitoring-platform-k6-tracing:
+    container_name: monitoring-platform-k6-tracing
+    image: ghcr.io/grafana/xk6-client-tracing:v0.0.5
+    environment:
+      - "ENDPOINT=monitoring-platform-otel-collector:4317"
+    restart: always
+    depends_on:
+      - monitoring-platform-otel-collector
+
+  monitoring-platform-otel-collector:
+    container_name: monitoring-platform-otel-collector
+    image: webgrip/monitoring-platform-otel-collector:latest
+    build:
+      context: ./ops/otel-collector
+      dockerfile: Dockerfile
+    command: ["--config", "/etc/otelcol-contrib/config.yaml"]
+    volumes:
+      - ./ops/otel-collector/config.yml:/etc/otelcol-contrib/config.yaml
+#    ports:
+#      - "1888:1888"   # pprof extension
+#      - "8888:8888"   # Prometheus metrics exposed by the collector
+#      - "8889:8889"   # Prometheus exporter metrics
+#      - "13133:13133" # health_check extension
+#      - "4317:4317"   # OTLP gRPC receiver
+#      - "4318:4318"   # OTLP HTTP receiver
+
+  monitoring-platform-mariadb:
+    container_name: monitoring-platform-mariadb
     build:
       context: ./ops/mariadb
       dockerfile: Dockerfile
@@ -100,14 +113,6 @@ services:
       MYSQL_USER: monitor
       MYSQL_PASSWORD: monitor
 
-  monitoring-platform-mkcert:
-    container_name: monitoring-platform-mkcert
-    image: webgrip/traefik-local-development-mkcert:latest
-    pull_policy: always
-    volumes:
-      - ~/.config/mkcert:/root/.local/share/mkcert:ro
-      - certificate-data:/certificate-data:rw
-    entrypoint: [ "/app/entrypoint.sh", "monitoring-platform.test" ]
 
 volumes:
   grafana-data:

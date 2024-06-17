@@ -1,0 +1,41 @@
+services:
+  monitoring-platform-github-webhook-receiver:
+    container_name: monitoring-platform-github-webhook-receiver
+    build:
+      context: ops/github-webhook-receiver
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - SERVICE_PUBLIC_URL=http://monitoring-platform-ngrok:4040
+
+  monitoring-platform-ngrok:
+    container_name: monitoring-platform-ngrok
+    image: ngrok/ngrok:3.10.0-alpine
+    #restart: unless-stopped
+    command:
+      - "start"
+      - "--all"
+      - "--config"
+      - "/etc/ngrok.yml"
+    volumes:
+      - ./ops/ngrok/ngrok.yml:/etc/ngrok.yml
+    ports:
+      - 4040:4040
+    env_file:
+      - ops/ngrok/.env
+
+  monitoring-platform-node_exporter:
+    container_name: monitoring-platform-node_exporter
+    image: prom/node-exporter:v1.8.1
+    ports:
+      - "9100:9100"
+
+  monitoring-platform-prometheus:
+    container_name: monitoring-platform-prometheus
+    image: prom/prometheus:v2.52.0
+    volumes:
+      - ./ops/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./ops/prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml
+    ports:
+      - "9090:9090"
