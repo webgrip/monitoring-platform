@@ -1,4 +1,4 @@
-FROM grafana/grafana@sha256:dcd3ae78713958a862732c3608d32c03f0c279c35a2032d74b80b12c5cdc47b8
+FROM grafana/grafana:10.4.4-ubuntu
 LABEL maintainer="ryan@webgrip.nl"
 
 USER root
@@ -12,7 +12,6 @@ RUN apt-get upgrade -y && apt-get update && \
 
 COPY custom.ini /etc/grafana/custom.ini
 # If you have plugins to install, do it like this:
-RUN grafana cli plugins install grafana-image-renderer
 
 EXPOSE 3000
 

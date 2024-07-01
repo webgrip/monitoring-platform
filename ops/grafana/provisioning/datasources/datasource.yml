@@ -54,7 +54,7 @@ datasources:
 #        type: 'None'
   - name: mysql
     type: mysql
-    url: mariadb:3306
+    url: monitoring-platform-mariadb:3306
     user: root
     jsonData:
       database: monitoring

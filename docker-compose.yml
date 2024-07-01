@@ -8,6 +8,8 @@ services:
       - 3000:3000
     environment:
       - GF_PATHS_CONFIG=/etc/grafana/custom.ini
+      - GF_RENDERING_SERVER_URL=http://monitoring-platform-grafana-image-renderer:8081/render
+      - GF_RENDERING_CALLBACK_URL=http://grafana:3000/
     labels:
       - "traefik.enable=true"
       - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
@@ -29,6 +31,14 @@ services:
       - ./ops/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
       - ./ops/grafana/custom.ini:/etc/grafana/custom.ini
       - ./var/logs/grafana:/var/log/grafana
+
+  monitoring-platform-grafana-image-renderer:
+    container_name: monitoring-platform-grafana-image-renderer
+    image: grafana/grafana-image-renderer:3.11.0
+    ports:
+      - 8081
+    volumes:
+      - ./ops/grafana-image-renderer/config.json:/usr/src/app/config.json
 
   monitoring-platform-mkcert:
     container_name: monitoring-platform-mkcert
@@ -105,11 +115,13 @@ services:
     build:
       context: ./ops/mariadb
       dockerfile: Dockerfile
+    volumes:
+      - ./ops/mariadb/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     ports:
       - 3307:3306
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: monitor
+      MYSQL_DATABASE: monitoring
       MYSQL_USER: monitor
       MYSQL_PASSWORD: monitor
 

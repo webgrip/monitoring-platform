@@ -46,6 +46,30 @@
           "text": "All",
           "value": "All"
         }
+      },
+      {
+        "type": "query",
+        "name": "environment",
+        "label": "Environment",
+        "datasource": "mysql",
+        "refresh": 1,
+        "query": "SELECT DISTINCT Environment FROM clients",
+        "current": {
+          "text": "All",
+          "value": "All"
+        }
+      },
+      {
+        "type": "query",
+        "name": "magento_version",
+        "label": "Magento Version",
+        "datasource": "mysql",
+        "refresh": 1,
+        "query": "SELECT DISTINCT `Magento Version` FROM clients",
+        "current": {
+          "text": "All",
+          "value": "All"
+        }
       }
     ]
   },
@@ -83,11 +107,39 @@
         {
           "refId": "A",
           "format": "table",
-          "rawSql": "SELECT `Github URL`, `Customer`, `Environment`, `Hostname`, `User`, `Port`, `Branch`, `Base URL`, `Admin URL`, `Themes`, `Languages`, `HaProxy`, `Apache`, `Varnish`, `Elasticsearch`, `ImgProxy`, `RedisCache`, `RedisSession`, `MySQL`, `PHP`, `Varnish image cache`, `Metapackage version`, `composer vendic imgproxy version`, `Sites`, `Allowed sources`, `Allowed dev sources` FROM clients",
-          "hide": false
+          "rawSql": "SELECT `Github URL`, `Customer`, `Environment`, `Hostname`, `User`, `Port`, `Branch`, `Base URL`, `Admin URL`, `Themes`, `Languages`, `HaProxy`, `Apache`, `Varnish`, `Elasticsearch`, `ImgProxy`, `RedisCache`, `RedisSession`, `MySQL`, `PHP`, `Varnish image cache`, `Metapackage version`, `composer vendic imgproxy version`, `Sites`, `Allowed sources`, `Allowed dev sources` FROM clients"
         }
       ],
-      "transform": "table",
+      "transformations": [
+        {
+          "id": "filterByRefId",
+          "options": {
+            "include": ["A"]
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "value": "${client}",
+                "column": "Customer",
+                "operator": "="
+              },
+              {
+                "value": "${environment}",
+                "column": "Environment",
+                "operator": "="
+              },
+              {
+                "value": "${magento_version}",
+                "column": "Magento Version",
+                "operator": "="
+              }
+            ]
+          }
+        }
+      ],
       "options": {
         "showHeader": true,
         "columns": [
@@ -136,6 +188,62 @@
             "type": "string"
           }
         ]
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Github URL"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Github URL",
+                    "url": "${__value.raw}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Base URL"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Base URL",
+                    "url": "${__value.raw}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Admin URL"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Admin URL",
+                    "url": "${__value.raw}"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -152,8 +260,37 @@
         {
           "refId": "H",
           "format": "table",
-          "rawSql": "SELECT `PHP` as version, COUNT(*) as count FROM clients GROUP BY `PHP`",
-          "hide": false
+          "rawSql": "SELECT `PHP` as version, COUNT(*) as count FROM clients GROUP BY `PHP`"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "filterByRefId",
+          "options": {
+            "include": ["H"]
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "value": "${client}",
+                "column": "Customer",
+                "operator": "="
+              },
+              {
+                "value": "${environment}",
+                "column": "Environment",
+                "operator": "="
+              },
+              {
+                "value": "${magento_version}",
+                "column": "Magento Version",
+                "operator": "="
+              }
+            ]
+          }
         }
       ],
       "transform": "table"
@@ -172,8 +309,37 @@
         {
           "refId": "I",
           "format": "table",
-          "rawSql": "SELECT COUNT(*) as count, `Apache` as version FROM clients GROUP BY `Apache`",
-          "hide": false
+          "rawSql": "SELECT COUNT(*) as count, `Apache` as version FROM clients GROUP BY `Apache`"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "filterByRefId",
+          "options": {
+            "include": ["I"]
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "value": "${client}",
+                "column": "Customer",
+                "operator": "="
+              },
+              {
+                "value": "${environment}",
+                "column": "Environment",
+                "operator": "="
+              },
+              {
+                "value": "${magento_version}",
+                "column": "Magento Version",
+                "operator": "="
+              }
+            ]
+          }
         }
       ],
       "transform": "table"
@@ -192,8 +358,37 @@
         {
           "refId": "J",
           "format": "table",
-          "rawSql": "SELECT COUNT(*) as count, `Environment` FROM clients GROUP BY `Environment`",
-          "hide": false
+          "rawSql": "SELECT COUNT(*) as count, `Environment` FROM clients GROUP BY `Environment`"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "filterByRefId",
+          "options": {
+            "include": ["J"]
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "value": "${client}",
+                "column": "Customer",
+                "operator": "="
+              },
+              {
+                "value": "${environment}",
+                "column": "Environment",
+                "operator": "="
+              },
+              {
+                "value": "${magento_version}",
+                "column": "Magento Version",
+                "operator": "="
+              }
+            ]
+          }
         }
       ],
       "transform": "table"
@@ -212,8 +407,37 @@
         {
           "refId": "K",
           "format": "table",
-          "rawSql": "SELECT COUNT(*) as count, `Hostname` FROM clients GROUP BY `Hostname`",
-          "hide": false
+          "rawSql": "SELECT COUNT(*) as count, `Hostname` FROM clients GROUP BY `Hostname`"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "filterByRefId",
+          "options": {
+            "include": ["K"]
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "value": "${client}",
+                "column": "Customer",
+                "operator": "="
+              },
+              {
+                "value": "${environment}",
+                "column": "Environment",
+                "operator": "="
+              },
+              {
+                "value": "${magento_version}",
+                "column": "Magento Version",
+                "operator": "="
+              }
+            ]
+          }
         }
       ],
       "transform": "table"
@@ -232,8 +456,37 @@
         {
           "refId": "L",
           "format": "table",
-          "rawSql": "SELECT `RedisCache`, COUNT(*) as count FROM clients GROUP BY `RedisCache`",
-          "hide": false
+          "rawSql": "SELECT `RedisCache`, COUNT(*) as count FROM clients GROUP BY `RedisCache`"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "filterByRefId",
+          "options": {
+            "include": ["L"]
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "value": "${client}",
+                "column": "Customer",
+                "operator": "="
+              },
+              {
+                "value": "${environment}",
+                "column": "Environment",
+                "operator": "="
+              },
+              {
+                "value": "${magento_version}",
+                "column": "Magento Version",
+                "operator": "="
+              }
+            ]
+          }
         }
       ],
       "transform": "table"
@@ -252,8 +505,37 @@
         {
           "refId": "M",
           "format": "table",
-          "rawSql": "SELECT `MySQL`, COUNT(*) as count FROM clients GROUP BY `MySQL`",
-          "hide": false
+          "rawSql": "SELECT `MySQL`, COUNT(*) as count FROM clients GROUP BY `MySQL`"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "filterByRefId",
+          "options": {
+            "include": ["M"]
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "value": "${client}",
+                "column": "Customer",
+                "operator": "="
+              },
+              {
+                "value": "${environment}",
+                "column": "Environment",
+                "operator": "="
+              },
+              {
+                "value": "${magento_version}",
+                "column": "Magento Version",
+                "operator": "="
+              }
+            ]
+          }
         }
       ],
       "transform": "table"
@@ -272,8 +554,37 @@
         {
           "refId": "B",
           "format": "time_series",
-          "rawSql": "SELECT time, version FROM php_versions WHERE $__timeFilter(time)",
-          "hide": false
+          "rawSql": "SELECT time, version FROM php_versions WHERE $__timeFilter(time)"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "filterByRefId",
+          "options": {
+            "include": ["B"]
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "value": "${client}",
+                "column": "Customer",
+                "operator": "="
+              },
+              {
+                "value": "${environment}",
+                "column": "Environment",
+                "operator": "="
+              },
+              {
+                "value": "${magento_version}",
+                "column": "Magento Version",
+                "operator": "="
+              }
+            ]
+          }
         }
       ],
       "transform": "time_series"
@@ -292,8 +603,37 @@
         {
           "refId": "C",
           "format": "time_series",
-          "rawSql": "SELECT time, version FROM apache_versions WHERE $__timeFilter(time)",
-          "hide": false
+          "rawSql": "SELECT time, version FROM apache_versions WHERE $__timeFilter(time)"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "filterByRefId",
+          "options": {
+            "include": ["C"]
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "value": "${client}",
+                "column": "Customer",
+                "operator": "="
+              },
+              {
+                "value": "${environment}",
+                "column": "Environment",
+                "operator": "="
+              },
+              {
+                "value": "${magento_version}",
+                "column": "Magento Version",
+                "operator": "="
+              }
+            ]
+          }
         }
       ],
       "transform": "time_series"
@@ -312,11 +652,39 @@
         {
           "refId": "A",
           "format": "table",
-          "rawSql": "SELECT `Customer`, `Environment`, `PHP` as `PHP Version`, `Apache` as `Apache Version`, `MySQL` as `MySQL Version` FROM clients",
-          "hide": false
+          "rawSql": "SELECT `Customer`, `Environment`, `PHP` as `PHP Version`, `Apache` as `Apache Version`, `MySQL` as `MySQL Version` FROM clients"
         }
       ],
-      "transform": "table",
+      "transformations": [
+        {
+          "id": "filterByRefId",
+          "options": {
+            "include": ["A"]
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "value": "${client}",
+                "column": "Customer",
+                "operator": "="
+              },
+              {
+                "value": "${environment}",
+                "column": "Environment",
+                "operator": "="
+              },
+              {
+                "value": "${magento_version}",
+                "column": "Magento Version",
+                "operator": "="
+              }
+            ]
+          }
+        }
+      ],
       "options": {
         "showHeader": true,
         "columns": [
@@ -474,8 +842,37 @@
         {
           "refId": "D",
           "format": "table",
-          "rawSql": "SELECT Environment, COUNT(*) as count FROM clients GROUP BY Environment",
-          "hide": false
+          "rawSql": "SELECT Environment, COUNT(*) as count FROM clients GROUP BY Environment"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "filterByRefId",
+          "options": {
+            "include": ["D"]
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "value": "${client}",
+                "column": "Customer",
+                "operator": "="
+              },
+              {
+                "value": "${environment}",
+                "column": "Environment",
+                "operator": "="
+              },
+              {
+                "value": "${magento_version}",
+                "column": "Magento Version",
+                "operator": "="
+              }
+            ]
+          }
         }
       ],
       "transform": "table"
@@ -494,8 +891,7 @@
         {
           "refId": "E",
           "format": "heatmap",
-          "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le))",
-          "hide": false
+          "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le))"
         }
       ],
       "transform": "heatmap"
@@ -514,8 +910,7 @@
         {
           "refId": "F",
           "format": "table",
-          "expr": "sum by (resource) (rate(container_cpu_usage_seconds_total[1m]))",
-          "hide": false
+          "expr": "sum by (resource) (rate(container_cpu_usage_seconds_total[1m]))"
         }
       ],
       "transform": "table"
@@ -536,8 +931,7 @@
       "targets": [
         {
           "refId": "G",
-          "expr": "{job=\"system\"}",
-          "hide": false
+          "expr": "{job=\"system\"}"
         }
       ],
       "transform": "logs"
