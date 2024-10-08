@@ -1,49 +1,44 @@
 auth_enabled: false
 
 server:
+  http_listen_address: 0.0.0.0
   http_listen_port: 3100
 
 ingester:
   lifecycler:
     ring:
       kvstore:
-        store: inmemory
+        store: inmemory  # Suitable for development, but use a distributed store like memberlist or consul in production.
       replication_factor: 1
   chunk_idle_period: 5m
   chunk_retain_period: 30s
-  max_transfer_retries: 0
 
 schema_config:
   configs:
-    - from: 2020-10-24
-      store: boltdb-shipper
-      object_store: filesystem
-      schema: v11
+    - from: 2024-04-01  # Ensure the date matches when your logs will be ingested
+      object_store: filesystem  # Consider object storage like S3 for larger setups.
+      store: tsdb
+      schema: v13
       index:
         prefix: index_
-        period: 24h
+        period: 24h  # Daily index rotation, suitable for moderate workloads.
 
 storage_config:
-  boltdb_shipper:
-    active_index_directory: /index
-    cache_location: /loki/boltdb-cache
+  tsdb_shipper:
+    active_index_directory: /loki/tsdb-index  # Ensure this directory is writable by the Loki process.
+    cache_location: /loki/tsdb-cache
     cache_ttl: 24h
-    shared_store: filesystem
   filesystem:
-    directory: /chunks
+    directory: /chunks  # Make sure the directory is large enough to hold log chunks.
 
 compactor:
-  working_directory: /loki/compactor
-  shared_store: filesystem
+  working_directory: /loki/compactor  # Directory for compaction process files.
 
 limits_config:
-  enforce_metric_name: false
-  reject_old_samples: true
-  reject_old_samples_max_age: 168h
-
-chunk_store_config:
-  max_look_back_period: 0s
+  allow_structured_metadata: true  # Enables structured log metadata, useful if you enrich logs with labels/metadata.
+  reject_old_samples: true  # Reject logs older than `reject_old_samples_max_age`.
+  reject_old_samples_max_age: 168h  # Keep logs from the last 7 days.
 
 table_manager:
-  retention_deletes_enabled: false
-  retention_period: 0s
+  retention_deletes_enabled: true  # Enables automatic deletion of old logs.
+  retention_period: 720h  # Set retention to 30 days (change as needed).

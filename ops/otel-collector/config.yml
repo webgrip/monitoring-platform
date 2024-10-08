@@ -16,6 +16,10 @@ exporters:
 #    endpoint: http://traefik-jaeger:4317
 #    tls:
 #      insecure: true
+  otlphttp:
+    endpoint: "http://monitoring-platform-loki:3100/oltp"
+    tls:
+      insecure: true
   otlp/tempo:
     endpoint: http://monitoring-platform-tempo:4317
     tls:
@@ -47,4 +51,4 @@ service:
     logs:
       receivers: [otlp]
 #      processors: [batch]
-      exporters: [debug]
+      exporters: [debug, otlphttp]

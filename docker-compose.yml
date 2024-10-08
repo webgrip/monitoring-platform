@@ -51,7 +51,7 @@ services:
 
   monitoring-platform-loki:
     container_name: monitoring-platform-loki
-    image: grafana/loki:2.9.8
+    image: grafana/loki:3.2.0
     ports:
       - "3100:3100"
     volumes:
@@ -84,14 +84,14 @@ services:
       - "4318:4318" # otlp http
       - "9411:9411" # zipkin
 
-  monitoring-platform-k6-tracing:
-    container_name: monitoring-platform-k6-tracing
-    image: ghcr.io/grafana/xk6-client-tracing:v0.0.5
-    environment:
-      - "ENDPOINT=monitoring-platform-otel-collector:4317"
-    restart: always
-    depends_on:
-      - monitoring-platform-otel-collector
+#  monitoring-platform-k6-tracing:
+#    container_name: monitoring-platform-k6-tracing
+#    image: ghcr.io/grafana/xk6-client-tracing:v0.0.5
+#    environment:
+#      - "ENDPOINT=monitoring-platform-otel-collector:4317"
+#    restart: always
+#    depends_on:
+#      - monitoring-platform-otel-collector
 
   monitoring-platform-otel-collector:
     container_name: monitoring-platform-otel-collector
