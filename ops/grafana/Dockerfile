@@ -1,4 +1,4 @@
-FROM grafana/grafana:10.4.4-ubuntu
+FROM grafana/grafana:11.2.2-ubuntu
 LABEL maintainer="ryan@webgrip.nl"
 
 USER root
