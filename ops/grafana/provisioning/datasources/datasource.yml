@@ -64,3 +64,15 @@ datasources:
       connMaxLifetime: 14400
     secureJsonData:
       password: root
+  - name: mysql-vencore
+    type: mysql
+    url: mariadb-vencore:3306
+    user: vencore
+    jsonData:
+      database: vencore
+      maxOpenConns: 100
+      maxIdleConns: 100
+      maxIdleConnsAuto: true
+      connMaxLifetime: 14400
+    secureJsonData:
+      password: vencore
