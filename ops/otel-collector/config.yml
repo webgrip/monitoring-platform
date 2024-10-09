@@ -17,7 +17,7 @@ exporters:
 #    tls:
 #      insecure: true
   otlphttp:
-    endpoint: "http://monitoring-platform-loki:3100/oltp"
+    endpoint: http://monitoring-platform-loki:3100/otlp
     tls:
       insecure: true
   otlp/tempo:
