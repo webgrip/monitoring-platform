@@ -1,4 +1,4 @@
-FROM grafana/tempo:main-6951cf6-arm64
+FROM grafana/tempo:main-1ba8723
 
 USER root
 
