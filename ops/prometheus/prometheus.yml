@@ -8,9 +8,9 @@ scrape_configs:
     static_configs:
       - targets: ['node_exporter:9100']
 
-  - job_name: 'github-webhook-receiver'
+  - job_name: 'monitoring-platform-github-webhook-receiver'
     static_configs:
-      - targets: ['github-webhook-receiver:8000']
+      - targets: ['monitoring-platform-github-webhook-receiver:8000']
 
 rule_files:
   - "alert.rules.yml"
