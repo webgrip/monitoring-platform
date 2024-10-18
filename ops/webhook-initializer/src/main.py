@@ -9,7 +9,7 @@ GITHUB_ORG = os.getenv('GITHUB_ORG')
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 # Get ngrok public URL
 def get_ngrok_url():
-    url = 'http://ngrok:4040/api/tunnels'
+    url = 'http://monitoring-platform-ngrok:4040/api/tunnels'
     while True:
         try:
             response = requests.get(url)
