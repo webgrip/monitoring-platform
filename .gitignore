@@ -3,3 +3,4 @@ var/logs/grafana/
 var/loki/
 .env
 ops/mariadb/docker-entrypoint-initdb.d/*.csv
+ops/mariadb/docker-entrypoint-initdb.d/*.sql
