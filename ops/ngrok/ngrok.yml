@@ -8,6 +8,6 @@ heartbeat_interval: 1m
 heartbeat_tolerance: 5s
 web_addr: 0.0.0.0:4040
 tunnels:
-  github-webhook-receiver:
-    addr: github-webhook-receiver:8000
+  monitoring-platform-github-webhook-receiver:
+    addr: monitoring-platform-github-webhook-receiver:8000
     proto: http

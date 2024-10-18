@@ -10,13 +10,15 @@ GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 # Get ngrok public URL
 def get_ngrok_url():
     url = 'http://monitoring-platform-ngrok:4040/api/tunnels'
+    print("Waiting for ngrok to start...")
     while True:
         try:
             response = requests.get(url)
             if response.status_code == 200:
                 data = response.json()
                 for tunnel in data['tunnels']:
-                    if tunnel['name'] == 'github-webhook-receiver':
+                    print(f"Found tunnel: {tunnel['name']}")
+                    if tunnel['name'] == 'monitoring-platform-github-webhook-receiver':
                         return tunnel['public_url']
         except Exception as e:
             print(f"Waiting for ngrok to start: {e}")
