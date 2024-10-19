@@ -121,8 +121,8 @@ function handleWorkflowRun(event) {
 
 function handleWorkflowJob(event) {
     if (event.action === 'completed') {
-        const { workflow_job } = event;
-        const clientName = workflow_job.repository.owner.login;
+        const { workflow_job, repository } = event;
+        const clientName = repository.owner.login;
         const jobName = workflow_job.name;
         const status = workflow_job.conclusion;
         const duration = (new Date(workflow_job.completed_at) - new Date(workflow_job.started_at)) / 1000;
