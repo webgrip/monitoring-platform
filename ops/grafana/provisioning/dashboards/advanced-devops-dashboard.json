@@ -23,7 +23,7 @@
   "panels": [
     {
       "datasource": {
-        "uid": "prometheus"
+        "uid": "monitoring-platform-prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -73,7 +73,7 @@
       "targets": [
         {
           "datasource": {
-            "uid": "prometheus"
+            "uid": "monitoring-platform-prometheus"
           },
           "expr": "100 - (avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[1m])) * 100)",
           "legendFormat": "{{instance}}",
@@ -85,7 +85,7 @@
     },
     {
       "datasource": {
-        "uid": "prometheus"
+        "uid": "monitoring-platform-prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -137,7 +137,7 @@
       "targets": [
         {
           "datasource": {
-            "uid": "prometheus"
+            "uid": "monitoring-platform-prometheus"
           },
           "expr": "node_memory_Active_bytes / node_memory_MemTotal_bytes * 100",
           "legendFormat": "{{instance}}",
@@ -149,7 +149,7 @@
     },
     {
       "datasource": {
-        "uid": "prometheus"
+        "uid": "monitoring-platform-prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -234,7 +234,7 @@
       "targets": [
         {
           "datasource": {
-            "uid": "prometheus"
+            "uid": "monitoring-platform-prometheus"
           },
           "expr": "histogram_quantile(0.95, sum(rate(github_actions_job_duration_seconds_bucket[5m])) by (le, job_name, stage))",
           "legendFormat": "{{job_name}} - {{stage}}",
@@ -246,7 +246,7 @@
     },
     {
       "datasource": {
-        "uid": "prometheus"
+        "uid": "monitoring-platform-prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -317,7 +317,7 @@
       "targets": [
         {
           "datasource": {
-            "uid": "prometheus"
+            "uid": "monitoring-platform-prometheus"
           },
           "expr": "sum(rate(github_actions_jobs_total[5m])) by (status, job_name, stage)",
           "legendFormat": "{{job_name}} - {{stage}}",
