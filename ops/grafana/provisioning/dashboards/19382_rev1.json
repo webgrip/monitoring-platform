@@ -85,7 +85,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_THANOS}"
+            "uid": "monitoring-platform-prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -133,7 +133,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_THANOS}"
+                "uid": "monitoring-platform-prometheus"
               },
               "editorMode": "builder",
               "expr": "horizontalrunnerautoscaler_runners_registered{name=\"$runnerdeployment\"}",
@@ -145,7 +145,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_THANOS}"
+                "uid": "monitoring-platform-prometheus"
               },
               "editorMode": "builder",
               "expr": "horizontalrunnerautoscaler_runners_busy{name=\"$runnerdeployment\"}",
@@ -171,7 +171,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_THANOS}"
+            "uid": "monitoring-platform-prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -330,7 +330,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_THANOS}"
+                "uid": "monitoring-platform-prometheus"
               },
               "editorMode": "builder",
               "expr": "horizontalrunnerautoscaler_runners_registered{name=\"$runnerdeployment\"}",
@@ -341,7 +341,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_THANOS}"
+                "uid": "monitoring-platform-prometheus"
               },
               "editorMode": "builder",
               "expr": "horizontalrunnerautoscaler_runners_busy{name=\"$runnerdeployment\"}",
@@ -353,7 +353,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_THANOS}"
+                "uid": "monitoring-platform-prometheus"
               },
               "editorMode": "builder",
               "expr": "horizontalrunnerautoscaler_replicas_desired{name=\"$runnerdeployment\"}",
@@ -365,7 +365,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_THANOS}"
+                "uid": "monitoring-platform-prometheus"
               },
               "editorMode": "code",
               "expr": "horizontalrunnerautoscaler_spec_max_replicas{horizontalrunnerautoscaler=~\".*$runnerdeployment-autoscaler\"}",
@@ -377,7 +377,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_THANOS}"
+                "uid": "monitoring-platform-prometheus"
               },
               "editorMode": "builder",
               "expr": "horizontalrunnerautoscaler_terminating_busy{name=\"$runnerdeployment\"}",
