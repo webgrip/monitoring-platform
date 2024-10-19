@@ -2,8 +2,8 @@ apiVersion: 1
 
 datasources:
   - name: monitoring-platform-loki
-    type: loki
     uid: monitoring-platform-loki
+    type: loki
     access: proxy
     url: http://monitoring-platform-loki:3100
     editable: true
@@ -18,8 +18,8 @@ datasources:
           url: '$${__value.raw}'
           urlDisplayLabel: 'View Trace'
   - name: monitoring-platform-tempo
-    type: tempo
     uid: monitoring-platform-tempo
+    type: tempo
     access: proxy
     url: http://monitoring-platform-tempo:3200
     editable: true
@@ -40,6 +40,7 @@ datasources:
     access: proxy
     url: http://monitoring-platform-otel-collector:8889
   - name: monitoring-platform-prometheus
+    uid: monitoring-platform-prometheus
     type: prometheus
     access: proxy
     url: http://monitoring-platform-prometheus:9090
