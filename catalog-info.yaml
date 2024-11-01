@@ -43,5 +43,5 @@ metadata:
   name: monitoring-platform-system
   description: Sample things which are good for demoing.
 spec:
-  owner: group:webgrip/engineering
+  owner: group:webgrip/infrastructure
   domain: telemetry-domain
