@@ -1,0 +1,47 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: monitoring-platform-service
+  title: Monitoring Platform
+  description: |
+    A Grafana instance with Prometheus, Loki, Tempo.
+  labels:
+    tier: "2"
+  links:
+    - url: https://www.notion.so/roadie/Sample-Service-e067465e56a14ae9b0507f8559f6aa26
+      title: Datadog
+      icon: dashboard
+  tags:
+    - monitoring
+    - telemetry
+    - grafana
+  annotations:
+    github.com/project-slug: webgrip/monitoring-platform
+    backstage.io/techdocs-ref: dir:.
+    backstage.io/kubernetes-label-selector: 'app.kubernetes.io/name=monitoring-platform'
+    backstage.io/code-coverage: enabled
+spec:
+  type: service
+  owner: group:webgrip/engineering
+  lifecycle: production
+  system: monitoring-platform-system
+---
+apiVersion: backstage.io/v1alpha1
+kind: Domain
+metadata:
+  name: telemetry-domain
+  description: |
+    The telemetry domain is responsible for all things related to monitoring and observability.
+    This includes Grafana dashboards.
+spec:
+  owner: group:webgrip/engineering
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  title: Sample System
+  name: monitoring-platform-system
+  description: Sample things which are good for demoing.
+spec:
+  owner: group:webgrip/engineering
+  domain: telemetry-domain
