@@ -8,8 +8,8 @@ metadata:
   labels:
     tier: "2"
   links:
-    - url: https://www.notion.so/roadie/Sample-Service-e067465e56a14ae9b0507f8559f6aa26
-      title: Datadog
+    - url: https://monitoring-platform.test
+      title: Development URL
       icon: dashboard
   tags:
     - monitoring
@@ -22,7 +22,7 @@ metadata:
     backstage.io/code-coverage: enabled
 spec:
   type: service
-  owner: group:webgrip/engineering
+  owner: group:webgrip/infrastructure
   lifecycle: production
   system: monitoring-platform-system
 ---
@@ -30,18 +30,21 @@ apiVersion: backstage.io/v1alpha1
 kind: Domain
 metadata:
   name: telemetry-domain
+  title: Telemetry
   description: |
     The telemetry domain is responsible for all things related to monitoring and observability.
     This includes Grafana dashboards.
 spec:
-  owner: group:webgrip/engineering
+  owner: group:webgrip/infrastructure
 ---
 apiVersion: backstage.io/v1alpha1
 kind: System
 metadata:
-  title: Sample System
+  title: Monitoring Platform
   name: monitoring-platform-system
-  description: Sample things which are good for demoing.
+  description: |
+    The monitoring platform system is responsible for all things related to monitoring and observability.
+    This includes Grafana dashboards.
 spec:
   owner: group:webgrip/infrastructure
   domain: telemetry-domain
