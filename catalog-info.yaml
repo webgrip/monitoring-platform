@@ -25,7 +25,7 @@ metadata:
       icon: dashboard
       type: website
 spec:
-  owner: group:webgrip/infrastructure
+  owner: group:infrastructure
   domain: webgrip/telemetry-domain
   type: product
 ---
@@ -54,7 +54,7 @@ metadata:
 spec:
   type: website
   lifecycle: experimental
-  owner: group:webgrip/infrastructure
+  owner: group:infrastructure
   system: monitoring-platform-system
 ---
 apiVersion: backstage.io/v1alpha1
@@ -84,7 +84,7 @@ metadata:
 spec:
   type: service
   lifecycle: experimental
-  owner: group:webgrip/infrastructure
+  owner: group:infrastructure
   system: monitoring-platform-system
 ---
 apiVersion: backstage.io/v1alpha1
@@ -114,7 +114,7 @@ metadata:
 spec:
   type: service
   lifecycle: experimental
-  owner: group:webgrip/infrastructure
+  owner: group:infrastructure
   system: monitoring-platform-system
 ---
 apiVersion: backstage.io/v1alpha1
@@ -143,7 +143,7 @@ metadata:
       type: website
 spec:
   type: service
-  owner: group:webgrip/infrastructure
+  owner: group:infrastructure
   system: monitoring-platform-system
 ---
 apiVersion: backstage.io/v1alpha1
@@ -171,6 +171,6 @@ metadata:
       type: website
 spec:
   type: database
-  owner: group:webgrip/infrastructure
+  owner: group:infrastructure
   system: monitoring-platform-system
   lifecycle: experimental
