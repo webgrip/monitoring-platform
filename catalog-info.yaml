@@ -80,7 +80,7 @@ metadata:
 spec:
   type: service
   owner: group:webgrip/infrastructure
-  system: webgrip/monitoring-platform-system
+  system: monitoring-platform-system
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
@@ -109,7 +109,7 @@ metadata:
 spec:
   type: service
   owner: group:webgrip/infrastructure
-  system: webgrip/monitoring-platform-system
+  system: monitoring-platform-system
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
@@ -138,7 +138,7 @@ metadata:
 spec:
   type: service
   owner: group:webgrip/infrastructure
-  system: webgrip/monitoring-platform-system
+  system: monitoring-platform-system
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Resource
@@ -164,6 +164,6 @@ metadata:
 spec:
   type: database
   owner: group:webgrip/infrastructure
-  system: webgrip/monitoring-platform-system
+  system: monitoring-platform-system
   dependsOn: [ ]
   dependencyOf: [ ]
