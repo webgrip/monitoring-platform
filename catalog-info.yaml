@@ -34,7 +34,7 @@ kind: Component
 metadata:
   name: monitoring-platform-grafana
   namespace: webgrip
-  title: Monitoring Platform
+  title: Grafana
   description: |
     Grafana is a multi-platform open source analytics and interactive visualization web application.
   labels:
