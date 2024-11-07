@@ -56,7 +56,7 @@ spec:
   lifecycle: experimental
   owner: group:webgrip/infrastructure
   system: monitoring-platform-system
-  subcomponentOf: [ ]
+  subcomponentOf:
   providesApis: [ ]
   consumesApis: [ ]
   dependsOn: [ ]
@@ -91,7 +91,7 @@ spec:
   lifecycle: experimental
   owner: group:webgrip/infrastructure
   system: monitoring-platform-system
-  subcomponentOf: [ ]
+  subcomponentOf:
   providesApis: [ ]
   consumesApis: [ ]
   dependsOn: [ ]
@@ -126,7 +126,7 @@ spec:
   lifecycle: experimental
   owner: group:webgrip/infrastructure
   system: monitoring-platform-system
-  subcomponentOf: [ ]
+  subcomponentOf:
   providesApis: [ ]
   consumesApis: [ ]
   dependsOn: [ ]
