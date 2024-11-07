@@ -1,50 +1,169 @@
 apiVersion: backstage.io/v1alpha1
-kind: Component
+kind: System
 metadata:
-  name: monitoring-platform-service
+  name: monitoring-platform-system
+  namespace: webgrip
   title: Monitoring Platform
   description: |
-    A Grafana instance with Prometheus, Loki, Tempo.
+    The monitoring platform system is responsible for all things related to monitoring and observability.
+    This includes Grafana dashboards.
   labels:
     tier: "2"
+  annotations:
+    github.com/project-slug: webgrip/monitoring-platform
+    backstage.io/techdocs-ref: dir:.
+  tags:
+    - monitoring
+    - telemetry
+    - observability
+    - grafana
+    - logs
+    - traces
   links:
     - url: https://monitoring-platform.test
       title: Development URL
       icon: dashboard
+      type: website
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: monitoring-platform-grafana
+  namespace: webgrip
+  title: Monitoring Platform
+  description: |
+    Grafana is a multi-platform open source analytics and interactive visualization web application.
+  labels:
+    tier: "2"
+  annotations:
+    backstage.io/kubernetes-label-selector: 'app.kubernetes.io/name=monitoring-platform-grafana'
   tags:
     - monitoring
     - telemetry
+    - observability
     - grafana
+  links:
+    - url: https://monitoring-platform.test
+      title: Development URL
+      icon: dashboard
+      type: website
+spec:
+  type: website
+  owner: group:webgrip/infrastructure
+  lifecycle: experimental
+  system: webgrip/monitoring-platform-system
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: monitoring-platform-loki
+  namespace: webgrip
+  title: Loki
+  description: |
+    Loki is a horizontally-scalable, highly-available, multi-tenant log aggregation system inspired by Prometheus.
+  labels:
+    tier: "2"
   annotations:
-    github.com/project-slug: webgrip/monitoring-platform
+    github.com/project-slug: grafana/loki
     backstage.io/techdocs-ref: dir:.
-    backstage.io/kubernetes-label-selector: 'app.kubernetes.io/name=monitoring-platform'
-    backstage.io/code-coverage: enabled
+    backstage.io/kubernetes-label-selector: 'app.kubernetes.io/name=monitoring-platform-loki'
+  tags:
+    - monitoring
+    - telemetry
+    - observability
+    - logs
+  links:
+    - url: https://grafana.com/docs/loki/latest/
+      title: Documentation
+      icon: book
+      type: website
 spec:
   type: service
   owner: group:webgrip/infrastructure
-  lifecycle: production
-  system: monitoring-platform-system
+  system: webgrip/monitoring-platform-system
 ---
 apiVersion: backstage.io/v1alpha1
-kind: Domain
+kind: Component
 metadata:
-  name: telemetry-domain
-  title: Telemetry
+  name: monitoring-platform-tempo
+  namespace: webgrip
+  title: Tempo
   description: |
-    The telemetry domain is responsible for all things related to monitoring and observability.
-    This includes Grafana dashboards.
+    Tempo is an easy-to-operate, high-scale, and cost-effective distributed tracing system.
+  labels:
+    tier: "2"
+  annotations:
+    github.com/project-slug: grafana/tempo
+    backstage.io/techdocs-ref: dir:.
+    backstage.io/kubernetes-label-selector: 'app.kubernetes.io/name=monitoring-platform-tempo'
+  tags:
+    - monitoring
+    - telemetry
+    - observability
+    - traces
+  links:
+    - url: https://grafana.com/docs/tempo/latest/
+      title: Documentation
+      icon: book
+      type: website
 spec:
+  type: service
   owner: group:webgrip/infrastructure
+  system: webgrip/monitoring-platform-system
 ---
 apiVersion: backstage.io/v1alpha1
-kind: System
+kind: Component
 metadata:
-  title: Monitoring Platform
-  name: monitoring-platform-system
+  name: monitoring-platform-otel-collector
+  namespace: webgrip
+  title: OpenTelemetry Collector (Contrib)
   description: |
-    The monitoring platform system is responsible for all things related to monitoring and observability.
-    This includes Grafana dashboards.
+    The OpenTelemetry Collector offers a vendor-agnostic implementation on how to receive, process and export telemetry data.
+  labels:
+    tier: "2"
+  annotations:
+    github.com/project-slug: open-telemetry/opentelemetry-collector-contrib
+    backstage.io/techdocs-ref: dir:.
+    backstage.io/kubernetes-label-selector: 'app.kubernetes.io/name=monitoring-platform-otel-collector'
+  tags:
+    - monitoring
+    - telemetry
+    - observability
+    - collection
+  links:
+    - url: https://opentelemetry.io/
+      title: Documentation
+      icon: book
+      type: website
 spec:
+  type: service
   owner: group:webgrip/infrastructure
-  domain: telemetry-domain
+  system: webgrip/monitoring-platform-system
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: monitoring-platform-mariadb
+  namespace: webgrip
+  title: MariaDB
+  description: |
+    MariaDB is a community-developed, commercially supported fork of the MySQL relational database management system.
+  labels:
+    tier: "3"
+  annotations:
+    github.com/project-slug: mariadb/server
+    backstage.io/techdocs-ref: dir:.
+    backstage.io/kubernetes-label-selector: 'app.kubernetes.io/name=monitoring-platform-mariadb'
+  tags:
+    - monitoring
+  links:
+    - url: https://mariadb.com/docs/server/
+      title: Documentation
+      icon: book
+      type: website
+spec:
+  type: database
+  owner: group:webgrip/infrastructure
+  system: webgrip/monitoring-platform-system
+  dependsOn: [ ]
+  dependencyOf: [ ]
