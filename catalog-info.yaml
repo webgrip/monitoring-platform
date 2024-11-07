@@ -56,11 +56,6 @@ spec:
   lifecycle: experimental
   owner: group:webgrip/infrastructure
   system: monitoring-platform-system
-  subcomponentOf:
-  providesApis: [ ]
-  consumesApis: [ ]
-  dependsOn: [ ]
-  dependencyOf: [ ]
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
@@ -91,11 +86,6 @@ spec:
   lifecycle: experimental
   owner: group:webgrip/infrastructure
   system: monitoring-platform-system
-  subcomponentOf:
-  providesApis: [ ]
-  consumesApis: [ ]
-  dependsOn: [ ]
-  dependencyOf: [ ]
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
@@ -126,11 +116,6 @@ spec:
   lifecycle: experimental
   owner: group:webgrip/infrastructure
   system: monitoring-platform-system
-  subcomponentOf:
-  providesApis: [ ]
-  consumesApis: [ ]
-  dependsOn: [ ]
-  dependencyOf: [ ]
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
@@ -177,6 +162,8 @@ metadata:
     backstage.io/kubernetes-label-selector: 'app.kubernetes.io/name=monitoring-platform-mariadb'
   tags:
     - monitoring
+    - telemetry
+    - observability
   links:
     - url: https://mariadb.com/docs/server/
       title: Documentation
