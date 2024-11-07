@@ -24,6 +24,10 @@ metadata:
       title: Development URL
       icon: dashboard
       type: website
+spec:
+  owner: group:webgrip/infrastructure
+  domain: webgrip/telemetry-domain
+  type: product
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
@@ -49,9 +53,14 @@ metadata:
       type: website
 spec:
   type: website
-  owner: group:webgrip/infrastructure
   lifecycle: experimental
+  owner: group:webgrip/infrastructure
   system: monitoring-platform-system
+  subcomponentOf: [ ]
+  providesApis: [ ]
+  consumesApis: [ ]
+  dependsOn: [ ]
+  dependencyOf: [ ]
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
@@ -79,8 +88,14 @@ metadata:
       type: website
 spec:
   type: service
+  lifecycle: experimental
   owner: group:webgrip/infrastructure
   system: monitoring-platform-system
+  subcomponentOf: [ ]
+  providesApis: [ ]
+  consumesApis: [ ]
+  dependsOn: [ ]
+  dependencyOf: [ ]
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
@@ -108,8 +123,14 @@ metadata:
       type: website
 spec:
   type: service
+  lifecycle: experimental
   owner: group:webgrip/infrastructure
   system: monitoring-platform-system
+  subcomponentOf: [ ]
+  providesApis: [ ]
+  consumesApis: [ ]
+  dependsOn: [ ]
+  dependencyOf: [ ]
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
