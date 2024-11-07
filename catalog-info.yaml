@@ -173,5 +173,4 @@ spec:
   type: database
   owner: group:webgrip/infrastructure
   system: monitoring-platform-system
-  dependsOn: [ ]
-  dependencyOf: [ ]
+  lifecycle: experimental
