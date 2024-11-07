@@ -51,7 +51,7 @@ spec:
   type: website
   owner: group:webgrip/infrastructure
   lifecycle: experimental
-  system: webgrip/monitoring-platform-system
+  system: monitoring-platform-system
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
