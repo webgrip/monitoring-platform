@@ -1,4 +1,120 @@
 apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: monitoring-platform-webhook-initializer
+  namespace: webgrip
+  title: Webhook Initializer
+  description: |
+    The Webhook Initializer service sets up webhooks for the monitoring platform.
+  labels:
+    tier: "2"
+  annotations:
+    github.com/project-slug: webgrip/webhook-initializer
+    backstage.io/techdocs-ref: dir:.
+    backstage.io/kubernetes-label-selector: 'app.kubernetes.io/name=webhook-initializer'
+  tags:
+    - monitoring
+    - webhook
+    - automation
+  links:
+    - url: https://github.com/webgrip/webhook-initializer
+      title: Source Code
+      icon: github
+      type: source
+spec:
+  type: service
+  lifecycle: development
+  owner: group:webgrip/infrastructure
+  system: monitoring-platform-system
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: monitoring-platform-github-webhook-receiver
+  namespace: webgrip
+  title: GitHub Webhook Receiver
+  description: |
+    Receives and processes GitHub webhooks for the monitoring platform.
+  labels:
+    tier: "2"
+  annotations:
+    github.com/project-slug: webgrip/github-webhook-receiver
+    backstage.io/techdocs-ref: dir:.
+    backstage.io/kubernetes-label-selector: 'app.kubernetes.io/name=monitoring-platform-github-webhook-receiver'
+  tags:
+    - monitoring
+    - webhook
+    - GitHub
+  links:
+    - url: https://github.com/webgrip/github-webhook-receiver
+      title: Source Code
+      icon: github
+      type: source
+spec:
+  type: service
+  lifecycle: development
+  owner: group:webgrip/infrastructure
+  system: monitoring-platform-system
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: monitoring-platform-grafana-image-renderer
+  namespace: webgrip
+  title: Grafana Image Renderer
+  description: |
+    Grafana plugin for rendering panels and dashboards as images.
+  labels:
+    tier: "2"
+  annotations:
+    docker.io/image: grafana/grafana-image-renderer:3.11.0
+    backstage.io/techdocs-ref: dir:.
+    backstage.io/kubernetes-label-selector: 'app.kubernetes.io/name=monitoring-platform-grafana-image-renderer'
+  tags:
+    - monitoring
+    - grafana
+    - rendering
+  links:
+    - url: https://github.com/grafana/grafana-image-renderer
+      title: Source Code
+      icon: github
+      type: source
+spec:
+  type: library
+  lifecycle: development
+  owner: group:webgrip/infrastructure
+  system: monitoring-platform-system
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: monitoring-platform-ngrok
+  namespace: webgrip
+  title: Ngrok
+  description: |
+    Ngrok is used to expose the local webhook receiver to the internet for testing.
+  labels:
+    tier: "2"
+  annotations:
+    docker.io/image: ngrok/ngrok:3.10.0-alpine
+    backstage.io/techdocs-ref: dir:.
+    backstage.io/kubernetes-label-selector: 'app.kubernetes.io/name=monitoring-platform-ngrok'
+  tags:
+    - monitoring
+    - ngrok
+    - tunneling
+  links:
+    - url: https://ngrok.com/
+      title: Ngrok Website
+      icon: link
+      type: website
+spec:
+  type: tool
+  lifecycle: development
+  owner: group:webgrip/infrastructure
+  system: monitoring-platform-system
+---
+apiVersion: backstage.io/v1alpha1
 kind: System
 metadata:
   name: monitoring-platform-system
@@ -25,7 +141,7 @@ metadata:
       icon: dashboard
       type: website
 spec:
-  owner: group:infrastructure
+  owner: group:webgrip/infrastructure
   domain: webgrip/telemetry-domain
   type: product
 ---
@@ -54,7 +170,7 @@ metadata:
 spec:
   type: website
   lifecycle: experimental
-  owner: group:infrastructure
+  owner: group:webgrip/infrastructure
   system: monitoring-platform-system
 ---
 apiVersion: backstage.io/v1alpha1
@@ -84,7 +200,7 @@ metadata:
 spec:
   type: service
   lifecycle: experimental
-  owner: group:infrastructure
+  owner: group:webgrip/infrastructure
   system: monitoring-platform-system
 ---
 apiVersion: backstage.io/v1alpha1
@@ -114,7 +230,7 @@ metadata:
 spec:
   type: service
   lifecycle: experimental
-  owner: group:infrastructure
+  owner: group:webgrip/infrastructure
   system: monitoring-platform-system
 ---
 apiVersion: backstage.io/v1alpha1
@@ -144,7 +260,7 @@ metadata:
 spec:
   type: service
   lifecycle: experimental
-  owner: group:infrastructure
+  owner: group:webgrip/infrastructure
   system: monitoring-platform-system
 ---
 apiVersion: backstage.io/v1alpha1
@@ -172,6 +288,6 @@ metadata:
       type: website
 spec:
   type: database
-  owner: group:infrastructure
+  owner: group:webgrip/infrastructure
   system: monitoring-platform-system
   lifecycle: experimental
