@@ -43,8 +43,8 @@ metadata:
     backstage.io/kubernetes-label-selector: 'app.kubernetes.io/name=monitoring-platform-github-webhook-receiver'
   tags:
     - monitoring
+    - github
     - webhook
-    - GitHub
   links:
     - url: https://github.com/webgrip/github-webhook-receiver
       title: Source Code
