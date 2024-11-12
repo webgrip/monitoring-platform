@@ -1,3 +1,3 @@
 Test
 
-[Test2](test2.md)
+[Test2](architecture.md)
