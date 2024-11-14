@@ -1,5 +1,12 @@
 on:
   workflow_call:
+    secrets:
+      DOCKER_USERNAME:
+        description: 'DockerHub username'
+        required: true
+      DCOKER_TOKEN:
+        description: 'DockerHub token'
+        required: true
 
 jobs:
   build-docker-image-monitoring-platform-grafana:
