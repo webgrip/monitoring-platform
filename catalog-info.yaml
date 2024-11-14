@@ -217,7 +217,7 @@ metadata:
     github.com/project-slug: grafana/loki
     backstage.io/techdocs-ref: dir:.
     backstage.io/kubernetes-label-selector: 'app.kubernetes.io/name=monitoring-platform-loki'
-    simpleicons.org/icon-slug: githubactions
+    simpleicons.org/icon-slug: grafana
   tags:
     - monitoring
     - telemetry
