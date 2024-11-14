@@ -128,6 +128,7 @@ metadata:
   annotations:
     github.com/project-slug: webgrip/monitoring-platform
     backstage.io/techdocs-ref: dir:.
+    simpleicons.org/icon-slug: grafana
   tags:
     - monitoring
     - telemetry
