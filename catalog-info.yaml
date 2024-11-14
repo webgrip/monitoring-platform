@@ -136,10 +136,28 @@ metadata:
     - logs
     - traces
   links:
-    - url: https://monitoring-platform.test
-      title: Development URL
+    - title: Development URL
+      url: https://monitoring-platform.test
       icon: dashboard
       type: website
+    - title: Prometheus
+      url: https://google.ch
+      icon: prometheus
+    - title: Grafana
+      url: https://google.ch
+      icon: grafana
+    - title: Google BigQuery
+      url: https://google.ch
+      icon: googlebigquery
+    - title: 1.1.1.1
+      url: https://google.ch
+      icon: 1dot1dot1dot1
+    - title: Github copilot
+      url: https://google.ch
+      icon: githubcopilot
+    - title: Backstage
+      url: https://google.ch
+      icon: backstage
 spec:
   owner: group:webgrip/infrastructure
   domain: webgrip/telemetry-domain
