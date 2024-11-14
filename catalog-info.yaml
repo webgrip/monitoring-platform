@@ -165,8 +165,8 @@ metadata:
     - logs
     - traces
   links:
-    - title: Development URL
-      url: https://monitoring-platform.test
+    - url: https://monitoring-platform.test
+      title: Development URL
       icon: dashboard
       type: website
 spec:
