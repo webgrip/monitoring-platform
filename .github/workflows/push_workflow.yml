@@ -1,0 +1,9 @@
+concurrency:
+  group: push-${{ github.branch }}
+on:
+  push:
+    branches:
+      - 'master'
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
