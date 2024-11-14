@@ -4,7 +4,7 @@ on:
       DOCKER_USERNAME:
         description: 'DockerHub username'
         required: true
-      DCOKER_TOKEN:
+      DOCKER_TOKEN:
         description: 'DockerHub token'
         required: true
 
