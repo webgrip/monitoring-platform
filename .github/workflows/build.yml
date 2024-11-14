@@ -38,6 +38,7 @@ jobs:
           tags: |
             webgrip/monitoring-platform-grafana:latest
             webgrip/monitoring-platform-grafana:${{ github.sha }}
+
   build-docker-image-monitoring-platform-loki:
     name: 'Build Loki'
     runs-on: self-hosted
@@ -61,9 +62,9 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v5
         with:
-          context: ops/loki
+          context: ops/otel-collector
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            webgrip/monitoring-platform-loki:latest
-            webgrip/monitoring-platform-loki:${{ github.sha }}
+            webgrip/monitoring-platform-otel-collector:latest
+            webgrip/monitoring-platform-otel-collector:${{ github.sha }}
