@@ -353,5 +353,5 @@ spec:
   owner: group:webgrip/infrastructure
   system: monitoring-platform-system
   definition:
-    $openapi: ./openapi.yaml
+    $text: ./openapi.yaml
 
