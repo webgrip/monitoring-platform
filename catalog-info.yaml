@@ -348,7 +348,7 @@ metadata:
       icon: book
       type: website
 spec:
-  type: api
+  type: openapi
   lifecycle: experimental
   owner: group:webgrip/infrastructure
   system: monitoring-platform-system
