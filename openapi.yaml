@@ -1,0 +1,29 @@
+openapi: 3.0.0
+info:
+  title: 'Monitoring Platform API'
+  description: 'Monitoring Platform API'
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost:8080'
+    description: Localhost
+  -
+    url: 'https://monitoring-platform.test'
+    description: 'Traefik local development'
+paths:
+  /health:
+    get:
+      summary: 'Healthcheck endpoint'
+      operationId: healthCheck
+      responses:
+        '200':
+          description: 'Healthcheck successful'
+        '400':
+          description: 'Bad Request'
+      security:
+        - bearerAuth: [ ]
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
