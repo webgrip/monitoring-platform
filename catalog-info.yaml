@@ -1,148 +1,4 @@
 apiVersion: backstage.io/v1alpha1
-kind: Component
-metadata:
-  name: monitoring-platform-webhook-initializer
-  namespace: webgrip
-  title: Webhook Initializer
-  description: |
-    The Webhook Initializer service sets up webhooks for the monitoring platform.
-  labels:
-    tier: "2"
-  annotations:
-    github.com/project-slug: webgrip/webhook-initializer
-    backstage.io/techdocs-ref: dir:.
-    backstage.io/kubernetes-label-selector: 'app.kubernetes.io/name=webhook-initializer'
-    simpleicons.org/icon-slug: githubactions
-  tags:
-    - monitoring
-    - webhook
-    - automation
-  links:
-    - url: https://github.com/webgrip/webhook-initializer
-      title: Source Code
-      icon: github
-      type: source
-spec:
-  type: service
-  lifecycle: development
-  owner: group:webgrip/infrastructure
-  system: monitoring-platform-system
----
-apiVersion: backstage.io/v1alpha1
-kind: Component
-metadata:
-  name: monitoring-platform-github-webhook-receiver
-  namespace: webgrip
-  title: GitHub Webhook Receiver
-  description: |
-    Receives and processes GitHub webhooks for the monitoring platform.
-  labels:
-    tier: "2"
-  annotations:
-    github.com/project-slug: webgrip/github-webhook-receiver
-    backstage.io/techdocs-ref: dir:.
-    backstage.io/kubernetes-label-selector: 'app.kubernetes.io/name=monitoring-platform-github-webhook-receiver'
-    simpleicons.org/icon-slug: githubactions
-  tags:
-    - monitoring
-    - github
-    - webhook
-  links:
-    - url: https://github.com/webgrip/github-webhook-receiver
-      title: Source Code
-      icon: github
-      type: source
-spec:
-  type: service
-  lifecycle: development
-  owner: group:webgrip/infrastructure
-  system: monitoring-platform-system
----
-apiVersion: backstage.io/v1alpha1
-kind: Component
-metadata:
-  name: monitoring-platform-grafana-image-renderer
-  namespace: webgrip
-  title: Grafana Image Renderer
-  description: |
-    Grafana plugin for rendering panels and dashboards as images.
-  labels:
-    tier: "2"
-  annotations:
-    docker.io/image: grafana/grafana-image-renderer:3.11.0
-    backstage.io/techdocs-ref: dir:.
-    backstage.io/kubernetes-label-selector: 'app.kubernetes.io/name=monitoring-platform-grafana-image-renderer'
-    simpleicons.org/icon-slug: grafana
-  tags:
-    - monitoring
-    - grafana
-    - rendering
-  links:
-    - url: https://github.com/grafana/grafana-image-renderer
-      title: Source Code
-      icon: github
-      type: source
-spec:
-  type: library
-  lifecycle: development
-  owner: group:webgrip/infrastructure
-  system: monitoring-platform-system
----
-apiVersion: backstage.io/v1alpha1
-kind: Component
-metadata:
-  name: monitoring-platform-ngrok
-  namespace: webgrip
-  title: Ngrok
-  description: |
-    Ngrok is used to expose the local webhook receiver to the internet for testing.
-  labels:
-    tier: "2"
-  annotations:
-    docker.io/image: ngrok/ngrok:3.10.0-alpine
-    backstage.io/techdocs-ref: dir:.
-    backstage.io/kubernetes-label-selector: 'app.kubernetes.io/name=monitoring-platform-ngrok'
-    simpleicons.org/icon-slug: ngrok
-  tags:
-    - monitoring
-    - ngrok
-    - tunneling
-  links:
-    - url: https://ngrok.com/
-      title: Ngrok Website
-      icon: link
-      type: website
-    - title: Prometheus
-      url: https://google.ch
-      icon: prometheus
-      type: website
-    - title: Grafana
-      url: https://google.ch
-      icon: grafana
-      type: website
-    - title: Google BigQuery
-      url: https://google.ch
-      icon: googlebigquery
-      type: website
-    - title: 1.1.1.1
-      url: https://google.ch
-      icon: 1dot1dot1dot1
-      type: website
-    - title: Github copilot
-      url: https://google.ch
-      icon: githubcopilot
-      type: website
-    - title: Backstage
-      url: https://google.ch
-      icon: backstage
-      type: website
-spec:
-  type: tool
-  lifecycle: development
-  owner: group:webgrip/infrastructure
-  system: monitoring-platform-system
----
-apiVersion: backstage.io/v1alpha1
 kind: System
 metadata:
   name: monitoring-platform-system
@@ -200,6 +56,36 @@ metadata:
 spec:
   type: website
   lifecycle: experimental
+  owner: group:webgrip/infrastructure
+  system: monitoring-platform-system
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: monitoring-platform-grafana-image-renderer
+  namespace: webgrip
+  title: Grafana Image Renderer
+  description: |
+    Grafana plugin for rendering panels and dashboards as images.
+  labels:
+    tier: "2"
+  annotations:
+    docker.io/image: grafana/grafana-image-renderer:3.11.0
+    backstage.io/techdocs-ref: dir:.
+    backstage.io/kubernetes-label-selector: 'app.kubernetes.io/name=monitoring-platform-grafana-image-renderer'
+    simpleicons.org/icon-slug: grafana
+  tags:
+    - monitoring
+    - grafana
+    - rendering
+  links:
+    - url: https://github.com/grafana/grafana-image-renderer
+      title: Source Code
+      icon: github
+      type: source
+spec:
+  type: library
+  lifecycle: development
   owner: group:webgrip/infrastructure
   system: monitoring-platform-system
 ---
