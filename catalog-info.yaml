@@ -43,6 +43,7 @@ metadata:
   annotations:
     backstage.io/kubernetes-label-selector: 'app.kubernetes.io/name=monitoring-platform-grafana'
     simpleicons.org/icon-slug: grafana
+    sentry.io/project-slug: albeka
   tags:
     - monitoring
     - telemetry
