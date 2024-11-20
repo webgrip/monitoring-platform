@@ -44,7 +44,7 @@ metadata:
     backstage.io/kubernetes-label-selector: 'app.kubernetes.io/name=monitoring-platform-grafana'
     simpleicons.org/icon-slug: grafana
     sentry.io/project-slug: biogroei
-    newrelic.com/dashboard-guid: MzI0NjMxMHxWSVp8REFTSEJPQVJEfGRhOjQ0ODQwNg
+    newrelic.com/dashboard-guid: MzI0NjMxMHxBUE18QVBQTElDQVRJT058NDc3OTk4NTAx
   tags:
     - monitoring
     - telemetry
