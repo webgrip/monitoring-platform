@@ -78,7 +78,7 @@ jobs:
 
       - name: Deploy Tempo, Loki and Mimir
         run: |
-          for chart in ./ops/helm/*; do
+          for chart in ./ops/helm/ingestion/*; do
            echo "Processing chart $(basename "$chart")..."
             if [ -d "$chart" ]; then
               namespace=$(yq e '.namespace' "$chart/values.yaml" || echo "default")
