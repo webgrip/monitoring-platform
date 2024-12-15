@@ -1,12 +1,19 @@
 concurrency:
   group: push-${{ github.branch }}
+
 on:
   push:
     branches:
       - 'master'
+
 jobs:
-  build:
-    uses: ./.github/workflows/build.yml
+#  build:
+#    uses: ./.github/workflows/build.yml
+#    secrets:
+#      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+#      DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+  deploy:
+    uses: ./.github/workflows/deploy.yml
+#    needs: [ build ]
     secrets:
-      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+      DIGITAL_OCEAN_API_KEY: ${{ secrets.DIGITAL_OCEAN_API_KEY }}

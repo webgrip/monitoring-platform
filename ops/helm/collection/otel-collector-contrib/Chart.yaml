@@ -1,0 +1,9 @@
+apiVersion: v2
+name: custom-otel-collector
+description: A Helm chart for a custom OpenTelemetry Collector
+version: 0.1.0
+appVersion: "0.115.0"
+dependencies:
+  - name: opentelemetry-collector
+    version: "0.110.7"
+    repository: "https://open-telemetry.github.io/opentelemetry-helm-charts"

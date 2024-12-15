@@ -2,7 +2,7 @@ services:
   grafana:
     container_name: grafana-monitoring-platform
     build:
-      context: ops/grafana
+      context: ops/docker/grafana
       dockerfile: Dockerfile
     ports:
       - 3000:3000
@@ -32,9 +32,9 @@ services:
       - "traefik.http.services.grafana-monitoring-platform.loadbalancer.server.port=3000"
     volumes:
       - grafana-data:/var/lib/grafana
-      - ./ops/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
-      - ./ops/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
-      - ./ops/grafana/custom.ini:/etc/grafana/custom.ini
+      - ./ops/docker/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - ./ops/docker/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./ops/docker/grafana/custom.ini:/etc/grafana/custom.ini
       - ./var/logs/grafana:/var/log/grafana
 
   monitoring-platform-grafana-image-renderer:
@@ -43,7 +43,7 @@ services:
     ports:
       - 8081
     volumes:
-      - ./ops/grafana-image-renderer/config.json:/usr/src/app/config.json
+      - ./ops/docker/grafana-image-renderer/config.json:/usr/src/app/config.json
 
   monitoring-platform-mkcert:
     container_name: monitoring-platform-mkcert
@@ -61,8 +61,8 @@ services:
       - "3100:3100" # HTTP
       - "9095:9095" # GRCP
     volumes:
-      - ./ops/loki:/etc/loki
-      - ./ops/loki/local-config.yaml:/etc/loki/local-config.yaml
+      - ./ops/docker/loki:/etc/loki
+      - ./ops/docker/loki/local-config.yaml:/etc/loki/local-config.yaml
       - ./var/loki/index:/loki/tsdb-index
       - ./var/loki/wal:/wal
       - ./var/loki/chunks:/chunks
@@ -79,11 +79,11 @@ services:
         condition: service_started
     image: webgrip/monitoring-platform-tempo:latest
     build:
-      context: ./ops/tempo
+      context: ./ops/docker/tempo
       dockerfile: Dockerfile
     command: [ "-config.file=/etc/tempo.yaml" ]
     volumes:
-      - ./ops/tempo/tempo.yaml:/etc/tempo.yaml
+      - ./ops/docker/tempo/tempo.yaml:/etc/tempo.yaml
     ports:
       - "14268:14268" # jaeger ingest
       - "3200:3200" # tempo
@@ -104,11 +104,11 @@ services:
     container_name: monitoring-platform-otel-collector
     image: webgrip/monitoring-platform-otel-collector:latest
     build:
-      context: ./ops/otel-collector
+      context: ./ops/docker/otel-collector
       dockerfile: Dockerfile
     command: ["--config", "/etc/otelcol-contrib/config.yaml"]
     volumes:
-      - ./ops/otel-collector/config.yml:/etc/otelcol-contrib/config.yaml
+      - ./ops/docker/otel-collector/config.yml:/etc/otelcol-contrib/config.yaml
     ports:
 #      - "1888:1888"   # pprof extension
 #      - "8888:8888"   # Prometheus metrics exposed by the collector
@@ -120,10 +120,10 @@ services:
   monitoring-platform-mariadb:
     container_name: monitoring-platform-mariadb
     build:
-      context: ./ops/mariadb
+      context: ./ops/docker/mariadb
       dockerfile: Dockerfile
     volumes:
-      - ./ops/mariadb/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ./ops/docker/mariadb/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     ports:
       - 3307:3306
     environment:

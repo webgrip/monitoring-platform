@@ -1,0 +1,77 @@
+name: Helm Deploy
+
+on:
+  workflow_call:
+    secrets:
+      DIGITAL_OCEAN_API_KEY:
+        description: 'DigitalOcean API Key'
+        required: true
+  workflow_dispatch:
+
+
+jobs:
+  deploy-helm:
+    name: Deploy Helm Charts
+    runs-on: self-hosted
+
+    strategy:
+      matrix:
+        environment: [ staging ]
+
+    env:
+      DO_CLUSTER_NAME: ${{ matrix.environment }}-doks-cluster
+      DO_KUBECONFIG_FILE: './doks-kubeconfig'
+      NAMESPACE_TRAEFIK: 'traefik'
+      TRAEFIK_HELM_VALUES: './ops/helm/traefik-chart/values.yaml'
+      DO_CLI_VERSION: '1.119.1'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: latest
+
+      - name: Setup Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: latest
+
+      - name: Install doctl (DigitalOcean CLI)
+        run: |
+          curl -sL https://github.com/digitalocean/doctl/releases/download/v${{ env.DO_CLI_VERSION }}/doctl-${{ env.DO_CLI_VERSION }}-linux-amd64.tar.gz | tar -xz
+          sudo mv doctl /usr/local/bin
+
+      - name: Authenticate doctl
+        run: doctl auth init --access-token ${{ secrets.DIGITAL_OCEAN_API_KEY }}
+
+      - name: Fetch DOKS kubeconfig
+        run: doctl kubernetes cluster kubeconfig save $DO_CLUSTER_NAME
+
+      - name: Configure kubeconfig
+        run: |
+          export KUBECONFIG=$DO_KUBECONFIG_FILE
+
+      - name: Install yq
+        run: |
+          sudo wget https://github.com/mikefarah/yq/releases/download/v4.44.5/yq_linux_amd64 -O /usr/local/bin/yq
+          sudo chmod +x /usr/local/bin/yq
+
+      - name: Deploy Services
+        run: |
+          for chart in ./ops/helm/collection/*; do
+           echo "Processing chart $(basename "$chart")..."
+            if [ -d "$chart" ]; then
+              namespace=$(yq e '.namespace' "$chart/values.yaml" || echo "default")
+              echo "Deploying chart $(basename "$chart") to namespace $namespace..."
+              helm dependency update "$chart"
+              helm upgrade --install "$(basename "$chart")" "$chart" \
+                --namespace "$namespace" \
+                --create-namespace \
+                --values "$chart/values.yaml" \
+                --wait --timeout 10m \
+                --force
+            fi
+          done
