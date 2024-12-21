@@ -4,8 +4,8 @@ grafana:
   adminUser: admin
 
   admin:
-    userKey: admin
-    passwordKey: admin
+    userKey: admin-user
+    passwordKey: admin-password
 
   persistence:
     type: pvc
