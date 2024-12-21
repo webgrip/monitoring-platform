@@ -76,6 +76,23 @@ jobs:
             fi
           done
 
+      - name: Deploy Grafana
+        run: |
+          for chart in ./ops/helm/grafana/*; do
+           echo "Processing chart $(basename "$chart")..."
+            if [ -d "$chart" ]; then
+              namespace=$(yq e '.namespace' "$chart/values.yaml" || echo "default")
+              echo "Deploying chart $(basename "$chart") to namespace $namespace..."
+              helm dependency update "$chart"
+              helm upgrade --install "$(basename "$chart")" "$chart" \
+                --namespace "$namespace" \
+                --create-namespace \
+                --values "$chart/values.yaml" \
+                --wait --timeout 10m \
+                --force
+            fi
+          done
+
       - name: Deploy Tempo, Loki and Mimir
         run: |
           for chart in ./ops/helm/ingestion/*; do
