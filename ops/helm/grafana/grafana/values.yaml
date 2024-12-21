@@ -21,6 +21,44 @@ grafana:
       type: ClusterIP
       port: 80
 
+  datasources:
+    datasources.yml:
+      apiVersion: 1
+      datasources:
+#        - name: monitoring-platform-loki
+#          uid: monitoring-platform-loki
+#          type: loki
+#          access: proxy
+#          url: http://monitoring-platform-loki:3100
+#          editable: true
+#          jsonData:
+#            maxLines: 1000
+#            derivedFields:
+#              - datasourceUid: monitoring-platform-tempo
+#                matcherType: label
+#                matcherRegex: trace_id
+#                name: TraceID
+#                # url will be interpreted as query for the datasource
+#                url: '$${__value.raw}'
+#                urlDisplayLabel: 'View Trace'
+        - name: monitoring-platform-tempo
+          uid: monitoring-platform-tempo
+          type: tempo
+          access: proxy
+          url: http://tempo.monitoring.svc.cluster.local:3100
+          editable: true
+          jsonData:
+            tracesToLogsV2:
+              datasourceUid: 'monitoring-platform-loki'
+              spanStartTimeShift: '-1h'
+              spanEndTimeShift: '1h'
+              filterByTraceID: false
+              filterBySpanID: false
+              customQuery: true
+              query: '{$${__tags}} | trace_id = "$${__trace.traceId}"'
+              tags:
+                - key: 'service.name'
+                  value: 'service_name'
 #  ingress:
 #    enabled: true
 #    annotations:
