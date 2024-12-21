@@ -28,6 +28,13 @@ loki:
 
   singleBinary:
     replicas: 1
+    resources:
+      requests:
+          cpu: "100m"
+          memory: "50Mi"
+      limits:
+          cpu: "200m"
+          memory: "100Mi"
 
   # Zero out replica counts of other deployment modes
   backend:
