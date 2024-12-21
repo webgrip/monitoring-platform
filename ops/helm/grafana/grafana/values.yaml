@@ -26,22 +26,22 @@ grafana:
     datasources.yml:
       apiVersion: 1
       datasources:
-#        - name: monitoring-platform-loki
-#          uid: monitoring-platform-loki
-#          type: loki
-#          access: proxy
-#          url: http://monitoring-platform-loki:3100
-#          editable: true
-#          jsonData:
-#            maxLines: 1000
-#            derivedFields:
-#              - datasourceUid: monitoring-platform-tempo
-#                matcherType: label
-#                matcherRegex: trace_id
-#                name: TraceID
-#                # url will be interpreted as query for the datasource
-#                url: '$${__value.raw}'
-#                urlDisplayLabel: 'View Trace'
+        - name: monitoring-platform-loki
+          uid: monitoring-platform-loki
+          type: loki
+          access: proxy
+          url: http://loki.monitoring.svc.cluster.local:3100
+          editable: true
+          jsonData:
+            maxLines: 1000
+            derivedFields:
+              - datasourceUid: monitoring-platform-tempo
+                matcherType: label
+                matcherRegex: trace_id
+                name: TraceID
+                # url will be interpreted as query for the datasource
+                url: '$${__value.raw}'
+                urlDisplayLabel: 'View Trace'
         - name: monitoring-platform-tempo
           uid: monitoring-platform-tempo
           type: tempo
