@@ -62,3 +62,5 @@ loki:
     replicas: 0
   bloomGateway:
     replicas: 0
+  chunksCache:
+    allocatedMemory: 1024
