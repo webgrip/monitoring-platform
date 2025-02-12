@@ -1,0 +1,186 @@
+apiVersion: score.dev/v1b1
+metadata:
+  name: monitoring-platform
+  annotations:
+    github.com/project-slug: webgrip/monitoring-platform
+    backstage.io/techdocs-ref: dir:.
+    backstage.io/kubernetes-label-selector: 'app.kubernetes.io/name=monitoring-platform'
+    simpleicons.org/icon-slug: opentelemetry
+
+  labels:
+    app: monitoring
+containers:
+  grafana:
+    image: webgrip/monitoring-platform-grafana:latest
+    container_name: grafana-monitoring-platform
+    build:
+      context: ops/grafana
+      dockerfile: Dockerfile
+    resources:
+        limits:
+            memory: 1Gi
+        requests:
+            memory: 512Mi
+    ports:
+      www:
+        port: 3001
+        targetPort: 3000
+    environment:
+      - GF_PATHS_CONFIG=/etc/grafana/custom.ini
+      - GF_RENDERING_SERVER_URL=http://monitoring-platform-grafana-image-renderer:8081/render
+      - GF_RENDERING_CALLBACK_URL=http://grafana:3001/
+      - GF_FEATURE_TOGGLE_ENABLE=traceqlEditor tracesEmbeddedFlameGraph traceqlSearch correlations metricsSummary traceToMetrics datatrails
+      - GF_INSTALL_PLUGINS=https://storage.googleapis.com/integration-artifacts/grafana-lokiexplore-app/grafana-lokiexplore-app-latest.zip;grafana-lokiexplore-app,https://storage.googleapis.com/integration-artifacts/grafana-exploretraces-app/grafana-exploretraces-app-latest.zip;grafana-traces-app
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+    labels:
+      traefik:
+        enable: true
+        http:
+          routers:
+            grafana:
+              entrypoints: http
+              rule: Host(`monitoring-platform.test`)
+              middlewares: traefik-https-redirect
+            grafana-secure:
+              entrypoints: https
+              rule: Host(`monitoring-platform.test`)
+              tls:
+                domains:
+                  - main: monitoring-platform.test
+                    sans:
+                      - '*.monitoring-platform.test'
+              service: grafana
+          middlewares:
+            traefik-https-redirect:
+              redirectScheme:
+                scheme: https
+            sslheaders:
+              headers:
+                customRequestHeaders:
+                  X-Forwarded-Proto: https
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./ops/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - ./ops/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./ops/grafana/custom.ini:/etc/grafana/custom.ini
+      - ./var/logs/grafana:/var/log/grafana
+
+  monitoring-platform-grafana-image-renderer:
+    image: grafana/grafana-image-renderer:3.11.0
+    containerName: monitoring-platform-grafana-image-renderer
+    ports:
+      - port: 8081
+    volumes:
+      - ./ops/grafana-image-renderer/config.json:/usr/src/app/config.json
+
+  monitoring-platform-mkcert:
+    image: webgrip/traefik-local-development-mkcert:latest
+    containerName: monitoring-platform-mkcert
+    volumes:
+      - ~/.config/mkcert:/root/.local/share/mkcert:ro
+      - certificate-data:/certificate-data:rw
+    command: ["/app/entrypoint.sh", "monitoring-platform.test"]
+
+  monitoring-platform-loki:
+    image: grafana/loki:3.2.0
+    containerName: monitoring-platform-loki
+    ports:
+      - port: 3100
+      - port: 9095
+    volumes:
+      - ./ops/loki:/etc/loki
+      - ./ops/loki/local-config.yaml:/etc/loki/local-config.yaml
+      - ./var/loki/index:/loki/tsdb-index
+      - ./var/loki/wal:/wal
+      - ./var/loki/chunks:/chunks
+    health:
+      readinessProbe:
+        exec:
+          command: ["wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3100/ready"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+
+  monitoring-platform-tempo:
+    image: webgrip/monitoring-platform-tempo:latest
+    containerName: monitoring-platform-tempo
+    dependsOn:
+      - monitoring-platform-otel-collector
+    build:
+      context: ./ops/tempo
+      dockerfile: Dockerfile
+    command: ["-config.file=/etc/tempo.yaml"]
+    ports:
+      - port: 14268
+      - port: 3200
+      - port: 4317
+      - port: 4318
+      - port: 9411
+    volumes:
+      - ./ops/tempo/tempo.yaml:/etc/tempo.yaml
+
+  monitoring-platform-otel-collector:
+    image: webgrip/monitoring-platform-otel-collector:latest
+    containerName: monitoring-platform-otel-collector
+    build:
+      context: ./ops/otel-collector
+      dockerfile: Dockerfile
+    command: ["--config", "/etc/otelcol-contrib/config.yaml"]
+    ports:
+      - port: 13133
+    volumes:
+      - ./ops/otel-collector/config.yml:/etc/otelcol-contrib/config.yaml
+
+  monitoring-platform-mariadb:
+    build:
+      context: ./ops/mariadb
+      dockerfile: Dockerfile
+    containerName: monitoring-platform-mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: monitoring
+      MYSQL_USER: monitor
+      MYSQL_PASSWORD: monitor
+    ports:
+      - port: 3307
+        targetPort: 3306
+    volumes:
+      - ./ops/mariadb/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+
+service:
+  ports:
+    - port: 3001
+      targetPort: 3000
+
+resources:
+  db:
+    type: postgres
+  dns:
+    type: dns
+  route:
+    type: traefik
+    entrypoints:
+      - http
+      - https
+    rules:
+      - host: monitoring-platform.test
+        middlewares:
+          - traefik-https-redirect
+    tls:
+      - secret: certificate-data
+        domains:
+          - main: monitoring-platform.test
+            sans:
+              - '*.monitoring-platform.test'
+
+volumes:
+  grafana-data: {}
+  certificate-data:
+    external: true
+
+networks:
+  default:
+    external: true
+    name: vendic

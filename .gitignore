@@ -1,4 +1,5 @@
 .idea/
+.score-compose/
 var/logs/grafana/
 var/loki/
 .env
