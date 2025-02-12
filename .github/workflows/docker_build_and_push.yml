@@ -13,7 +13,7 @@ jobs:
     name: "Build and Push Grafana"
     uses: webgrip/workflows/.github/workflows/docker-build-and-push.yml@main
     with:
-      docker-context: './ops/grafana'
+      docker-context: './ops/docker/grafana'
       docker-file: 'Dockerfile'
       docker-tags: |
         webgrip/monitoring-platform-grafana:latest
@@ -26,7 +26,7 @@ jobs:
     name: "Build and Push OpenTelemetry Collector"
     uses: webgrip/workflows/.github/workflows/docker-build-and-push.yml@main
     with:
-      docker-context: './ops/otel-collector'
+      docker-context: './ops/docker/otel-collector'
       docker-file: 'Dockerfile'
       docker-tags: |
         webgrip/monitoring-platform-otel-collector:latest

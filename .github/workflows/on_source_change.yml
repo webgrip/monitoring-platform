@@ -9,6 +9,7 @@ on:
     paths:
       - 'ops/**'
       - '.github/workflows/on_source_change.yml'
+      - '.github/workflows/docker_build_and_push.yml'
 jobs:
   build:
     uses: ./.github/workflows/docker_build_and_push.yml
