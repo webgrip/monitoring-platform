@@ -1,0 +1,17 @@
+concurrency:
+  group: push-${{ github.branch }}
+
+on:
+  push:
+    branches:
+      - 'master'
+      - 'main'
+    paths:
+      - 'ops/**'
+      - '.github/workflows/on_source_change.yml'
+jobs:
+  build:
+    uses: ./.github/workflows/build_and_push.yml
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}

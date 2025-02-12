@@ -1,0 +1,36 @@
+on:
+  workflow_call:
+    secrets:
+      DOCKER_USERNAME:
+        description: 'DockerHub username'
+        required: true
+      DOCKER_TOKEN:
+        description: 'DockerHub token'
+        required: true
+
+jobs:
+  monitoring-platform-grafana:
+    name: "Build and Push Grafana"
+    uses: webgrip/workflows/.github/workflows/docker-build-and-push.yml@main
+    with:
+      docker-context: './ops/grafana'
+      docker-file: 'Dockerfile'
+      docker-tags: |
+        webgrip/monitoring-platform-grafana:latest
+        webgrip/monitoring-platform-grafana:${{ github.sha }}
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+
+  monitoring-platform-otel-collector:
+    name: "Build and Push OpenTelemetry Collector"
+    uses: webgrip/workflows/.github/workflows/docker-build-and-push.yml@main
+    with:
+      docker-context: './ops/otel-collector'
+      docker-file: 'Dockerfile'
+      docker-tags: |
+        webgrip/monitoring-platform-otel-collector:latest
+        webgrip/monitoring-platform-otel-collector:${{ github.sha }}
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
