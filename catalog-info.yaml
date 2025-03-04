@@ -13,7 +13,6 @@ metadata:
     github.com/project-slug: webgrip/monitoring-platform
     backstage.io/adr-location: docs/adrs
     backstage.io/techdocs-ref: dir:./docs/techdocs
-    github.com/project-slug: webgrip/monitoring-platform
     simpleicons.org/icon-slug: grafana
   tags:
     - monitoring
