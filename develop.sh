@@ -47,7 +47,7 @@ checkLastCommand () {
     fi
 }
 
-export DOCKER_CONTAINER=${DOCKER_CONTAINER:-php-fpm-vencore}
+export DOCKER_CONTAINER=${DOCKER_CONTAINER:-php-fpm}
 
 runOnDocker () {
     if [ ! $(docker inspect -f '{{.State.Running}}' $DOCKER_CONTAINER 2> /dev/null ) ]; then
