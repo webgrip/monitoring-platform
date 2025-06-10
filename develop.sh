@@ -10,7 +10,7 @@
 #%    This is a script to automate and simplify menial daily tasks.
 #%
 #% EXAMPLES
-#%    DOCKER_CONTAINER=php-fpm-vencore /.${SCRIPT_NAME}
+#%    DOCKER_CONTAINER=php-fpm /.${SCRIPT_NAME}
 #%
 #================================================================
 #- IMPLEMENTATION
