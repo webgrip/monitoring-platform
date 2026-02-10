@@ -1,4 +1,4 @@
-FROM mariadb:11.4.2-ubi9
+FROM mariadb:11.8.6-ubi9
 
 RUN useradd -ms /bin/bash mariadb_user
 

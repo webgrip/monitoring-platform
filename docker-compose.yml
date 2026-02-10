@@ -39,7 +39,7 @@ services:
 
   monitoring-platform-grafana-image-renderer:
     container_name: monitoring-platform-grafana-image-renderer
-    image: grafana/grafana-image-renderer:3.11.0
+    image: grafana/grafana-image-renderer:3.12.9
     ports:
       - 8081
     volumes:
@@ -56,7 +56,7 @@ services:
 
   monitoring-platform-loki:
     container_name: monitoring-platform-loki
-    image: grafana/loki:3.2.0
+    image: grafana/loki:3.6.5
     ports:
       - "3100:3100" # HTTP
       - "9095:9095" # GRCP
