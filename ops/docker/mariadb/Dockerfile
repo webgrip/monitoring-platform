@@ -1,4 +1,4 @@
-FROM mariadb:11.4.2-ubi9
+FROM mariadb:11.8.7-ubi9@sha256:6430bf53be5c54a0b1c71cde38c3848efa34df08982bfe3e4f4191c868a1eb5d
 
 RUN useradd -ms /bin/bash mariadb_user
 

@@ -1,4 +1,4 @@
-FROM grafana/tempo:main-1ba8723
+FROM grafana/tempo:main-1ba8723@sha256:f389e2ea65669d0be3e9e14df18466e78780e9f04177cc4e4ac8e527e6469284
 
 USER root
 

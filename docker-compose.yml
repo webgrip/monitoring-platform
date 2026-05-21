@@ -39,7 +39,7 @@ services:
 
   monitoring-platform-grafana-image-renderer:
     container_name: monitoring-platform-grafana-image-renderer
-    image: grafana/grafana-image-renderer:3.11.0
+    image: grafana/grafana-image-renderer:3.12.9@sha256:6d8650aad54e3efcbe9992ca1bc06e1046c7c15567019d4d289273f60ef59656
     ports:
       - 8081
     volumes:
@@ -47,7 +47,7 @@ services:
 
   monitoring-platform-mkcert:
     container_name: monitoring-platform-mkcert
-    image: webgrip/traefik-local-development-mkcert:latest
+    image: webgrip/traefik-local-development-mkcert:latest@sha256:573ec22f3802e2b841b8ad7c8cfd5b336aaed4eaccaa1587de8b778b90e00c7f
     pull_policy: always
     volumes:
       - ~/.config/mkcert:/root/.local/share/mkcert:ro
@@ -56,7 +56,7 @@ services:
 
   monitoring-platform-loki:
     container_name: monitoring-platform-loki
-    image: grafana/loki:3.2.0
+    image: grafana/loki:3.7.2@sha256:191d4fdfb7264f16989f0a57f320872620a5a7c2ceeec6229212c4190ec49b86
     ports:
       - "3100:3100" # HTTP
       - "9095:9095" # GRCP

@@ -1,4 +1,4 @@
-FROM grafana/grafana:11.2.2-ubuntu
+FROM grafana/grafana:11.2.2-ubuntu@sha256:2bef00403c18d27919ff19d64fd6253fa713b3880304e92f69109e14221ac843
 LABEL maintainer="ryan@webgrip.nl"
 
 USER root
