@@ -56,7 +56,7 @@ services:
 
   monitoring-platform-loki:
     container_name: monitoring-platform-loki
-    image: grafana/loki:3.2.0
+    image: grafana/loki:3.7.3
     ports:
       - "3100:3100" # HTTP
       - "9095:9095" # GRCP
