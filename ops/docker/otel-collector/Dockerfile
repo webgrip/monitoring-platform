@@ -1,4 +1,4 @@
-FROM otel/opentelemetry-collector-contrib:0.111.0
+FROM otel/opentelemetry-collector-contrib:0.156.0
 COPY config.yml /etc/otelcol-contrib/config.yaml
 
 ENTRYPOINT ["/otelcol-contrib"]
