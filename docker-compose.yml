@@ -39,7 +39,7 @@ services:
 
   monitoring-platform-grafana-image-renderer:
     container_name: monitoring-platform-grafana-image-renderer
-    image: grafana/grafana-image-renderer:3.11.0
+    image: grafana/grafana-image-renderer:v5.10.1
     ports:
       - 8081
     volumes:
