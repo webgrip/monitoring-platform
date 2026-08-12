@@ -33,7 +33,9 @@ jobs:
     needs: generate-documentation
     if: github.ref == 'refs/heads/master'  # this repo's default branch is master
     with:
-      dest-prefix: monitoring-platform
+      # Own bucket (estate #2): this repo's key can touch nothing but
+      # docs-monitoring-platform(-trash), so a bad sync can never clobber the estate.
+      bucket: docs-monitoring-platform
       # strict:false until this repo's links are cleaned; flip like homelab did.
       strict: 'true'
     secrets:
